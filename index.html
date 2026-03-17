@@ -543,10 +543,12 @@ var parroquias = L.geoJson(data,{
 
 style:function(){
 return{
-color:"#333",        // borde más suave
-weight:0.5,            // 🔹 líneas más finas
-fillColor:getColorParroquia(i++), // 🎨 color diferente
-fillOpacity:0.4
+color:"#333",            // borde
+weight:1,                // un poco más visible
+dashArray:"6,4",         // 👈 líneas punteadas
+fillColor:getColorParroquia(i++),
+fillOpacity:0.2,        // 👈 más transparente
+opacity:0.9              // 👈 borde más visible
 }
 },
 
