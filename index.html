@@ -462,7 +462,7 @@ fillOpacity:0
 
 // LIMITE CANTONAL
 
-fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/limite_cantonal.geojson")
+fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/limite_cantonal.geojson")
 .then(r=>r.json())
 .then(data=>{
 capaLimite(data,"black").addTo(map);
@@ -471,7 +471,7 @@ capaLimite(data,"black").addTo(map);
 
 // LIMITE BARRIAL
 
-fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/limite_barrial.geojson")
+fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/limite_barrial.geojson")
 .then(r=>r.json())
 .then(data=>{
 capaLimite(data,"red").addTo(map);
@@ -480,7 +480,7 @@ capaLimite(data,"red").addTo(map);
 
 // PARROQUIAS
 
-fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/parroquias.geojson")
+fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/parroquias.geojson")
 .then(r=>r.json())
 .then(data=>{
 capaLimite(data,"blue").addTo(map);
