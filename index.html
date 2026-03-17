@@ -94,7 +94,7 @@ width:100%;
 /* LEYENDA */
 
 .legend{
-font-size:12px;
+font-size:10px;
 }
 
 /* ===== CELULARES ===== */
@@ -130,6 +130,16 @@ padding:8px;
 max-width:180px;
 }
 
+}
+
+.labelParroquia{
+background: transparent !important;
+border: none !important;
+box-shadow: none !important;
+color: blue;
+font-size: 10px;
+font-weight: bold;
+text-shadow: 1px 1px 2px white;
 }
 
 </style>
@@ -219,7 +229,7 @@ fillOpacity:0.5
 }
 },
 
-onEachFeature: function (feature, capa){
+onEachFeature: function (feature, capa){autoPan:false
 
 capa.bindPopup("<strong>Clave Catastral: </strong>"+ feature.properties['clavecatas'] + "<br>" +
 "<strong>Zona: </strong>"+ feature.properties['zona'] + "<br>" +
@@ -232,15 +242,17 @@ capa.bindPopup("<strong>Clave Catastral: </strong>"+ feature.properties['claveca
 "<strong>Área: </strong>"+ feature.properties['area_m2']+ "<br>" +
 "<strong>Zona: </strong>"+ feature.properties['zonaurbano']+ "<br>" +
 "<strong>Parroquia: </strong>"+ feature.properties['parroquia']+ "<br>" +
-"<strong>Observación: </strong>"+ feature.properties['observacio']+ "<br>" +
-"<strong>RESOLUCION: </strong>"+ feature.properties['RESOLUCION']
+"<strong>barrio: </strong>"+ feature.properties['barrio']+ "<br>" +
+"<strong>RESOLUCION: </strong>"+ feature.properties['RESOLUCION']+ "<br>" +
+"<strong>Observación: </strong>"+ feature.properties['observacio']
+
 );
 
 // MOUSE SOBRE PREDIO
 
 capa.on("mouseover",function(){
 
-map.dragging.disable();
+//map.dragging.disable();
 
 this.setStyle({
 color:'red',
@@ -255,8 +267,7 @@ this.openPopup();
 // SALIR DEL PREDIO
 
 capa.on("mouseout",function(){
-
-map.dragging.enable();
+//map.dragging.enable();
 
 this.setStyle({
 color:contorno,
@@ -445,47 +456,127 @@ layer.openPopup();
 
 }
 
-// CAPAS ADMINISTRATIVAS
+// ================= CAPAS ADMINISTRATIVAS =================
+
+// grupo para controlar orden
+var grupoLimites = L.layerGroup().addTo(map);
 
 function capaLimite(datos,color){
 
 return L.geoJson(datos,{
+
 style:{
 color:color,
-weight:3,
+weight:4,
+opacity:1,
 fillOpacity:0
+},
+
+onEachFeature:function(feature,layer){
+
+// mostrar nombre si existe
+if(feature.properties){
+
+var nombre =
+feature.properties.nombre ||
+feature.properties.NOMBRE ||
+feature.properties.parroquia ||
+feature.properties.barrio ||
+"";
+
+if(nombre!=""){
+layer.bindTooltip(nombre,{
+permanent:false,
+direction:"center",
+className:"labelLimite"
+});
 }
+
+}
+
+}
+
 });
 
 }
 
 
 // LIMITE CANTONAL
+//fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/refs/heads/main/Limite_Cantonal.geojson")
+//.then(r=>r.json())
+//.then(data=>{
 
-fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/limite_cantonal.geojson")
-.then(r=>r.json())
-.then(data=>{
-capaLimite(data,"black").addTo(map);
-});
+//var cantonal = capaLimite(data,"black");
+//grupoLimites.addLayer(cantonal);
+
+//});
 
 
-// LIMITE BARRIAL
+// LIMITES BARRIALES
+//fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/refs/heads/main/Limites_Barriales.geojson")
+//.then(r=>r.json())
+//.then(data=>{
 
-fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/limite_barrial.geojson")
-.then(r=>r.json())
-.then(data=>{
-capaLimite(data,"red").addTo(map);
-});
+//var barrial = capaLimite(data,"red");
+//grupoLimites.addLayer(barrial);
 
+//});
+
+// COLORES AUTOMÁTICOS
+function getColorParroquia(i){
+var colores = [
+"#FFCDD2","#F8BBD0","#E1BEE7","#D1C4E9","#C5CAE9",
+"#BBDEFB","#B3E5FC","#B2EBF2","#B2DFDB","#C8E6C9",
+"#DCEDC8","#F0F4C3","#FFF9C4","#FFE0B2","#FFCCBC"
+];
+return colores[i % colores.length];
+}
 
 // PARROQUIAS
-
-fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/parroquias.geojson")
+fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/refs/heads/main/Parroquias_Urbanas_y_Rurales.geojson")
 .then(r=>r.json())
 .then(data=>{
-capaLimite(data,"blue").addTo(map);
+
+var i = 0;
+
+var parroquias = L.geoJson(data,{
+
+style:function(){
+return{
+color:"#333",        // borde más suave
+weight:0.5,            // 🔹 líneas más finas
+fillColor:getColorParroquia(i++), // 🎨 color diferente
+fillOpacity:0.4
+}
+},
+
+onEachFeature:function(feature,layer){
+
+var nombre =
+feature.properties.name ||
+feature.properties.nombre ||
+feature.properties.NOMBRE ||
+feature.properties.parroquia ||
+"";
+
+if(nombre!=""){
+
+// TEXTO FIJO SIEMPRE VISIBLE
+layer.bindTooltip(nombre,{
+permanent:true,
+direction:"center",
+className:"labelParroquia"
 });
 
+}
+
+}
+
+});
+
+grupoLimites.addLayer(parroquias);
+
+});
 
 // --------- AGREGADO PARA MOSTRAR CANTIDAD DE PREDIOS POR AÑO ---------
 
