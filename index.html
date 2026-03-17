@@ -524,9 +524,21 @@ className:"labelLimite"
 // COLORES AUTOMÁTICOS
 function getColorParroquia(i){
 var colores = [
-"#FFCDD2","#F8BBD0","#E1BEE7","#D1C4E9","#C5CAE9",
-"#BBDEFB","#B3E5FC","#B2EBF2","#B2DFDB","#C8E6C9",
-"#DCEDC8","#F0F4C3","#FFF9C4","#FFE0B2","#FFCCBC"
+"#fde0dd", // rosado suave
+"#e0ecf4", // azul muy claro
+"#e6f5d0", // verde suave
+"#fff2ae", // amarillo suave
+"#f1e2cc", // beige
+"#d9f0f3", // celeste suave
+"#fddbc7", // salmón claro
+"#e7d4e8", // lila claro
+"#ccebc5", // verde pastel
+"#fbb4ae", // rosado claro
+"#b3cde3", // azul pastel
+"#decbe4", // lavanda
+"#fed9a6", // naranja pastel
+"#ffffcc", // amarillo pálido
+"#e5d8bd"  // tierra claro
 ];
 return colores[i % colores.length];
 }
@@ -536,19 +548,36 @@ fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacio
 .then(r=>r.json())
 .then(data=>{
 
+// guardar colores por parroquia
+var coloresParroquia = {};
 var i = 0;
 
 var parroquias = L.geoJson(data,{
 
-style:function(){
-return{
-color:"#333",            // borde
-weight:1.5,                // un poco más visible
-dashArray:"10,15",         // 👈 líneas punteadas
-fillColor:getColorParroquia(i++),
-fillOpacity:0.2,        // 👈 más transparente
-opacity:0.9              // 👈 borde más visible
+style:function(feature){
+
+var nombre = (
+feature.properties.parroquia ||
+feature.properties.nombre ||
+feature.properties.name ||
+feature.properties.NOMBRE ||
+"sin_nombre"
+).toString().trim().toUpperCase();
+
+// si no tiene color asignado, se le da uno
+if(!coloresParroquia[nombre]){
+coloresParroquia[nombre] = getColorParroquia(i++);
 }
+
+return{
+color:"#333",
+weight:1.5,
+dashArray:"10,15",
+fillColor:coloresParroquia[nombre], // 👈 color fijo por parroquia
+fillOpacity:0.30,
+opacity:0.9
+}
+
 },
 
 onEachFeature:function(feature,layer){
