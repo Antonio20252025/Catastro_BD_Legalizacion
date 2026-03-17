@@ -25,8 +25,8 @@ font-family:Arial;
 .logo-manta{
 position:absolute;
 left:20px;
-top:10px;
-width:130px;
+top:5px;
+width:120px;
 z-index:1000;
 }
 
@@ -34,14 +34,14 @@ z-index:1000;
 
 .titulo{
 text-align:center;
-line-height:1.2;
+line-height:0.5;
 }
 
 /* MAPA RESPONSIVO */
 
 #mapa{
 width:100%;
-height:70vh;
+height:75vh;
 border:2px solid #004bad;
 }
 
@@ -64,7 +64,7 @@ max-width:260px;
 
 #buscadorPredio{
 position:absolute;
-bottom:20px;
+bottom:5px;
 right:20px;
 background:white;
 padding:10px;
@@ -138,8 +138,7 @@ border: none !important;
 box-shadow: none !important;
 color: blue;
 font-size: 10px;
-font-weight: bold;
-text-shadow: 1px 1px 2px white;
+
 }
 
 </style>
@@ -148,8 +147,8 @@ text-shadow: 1px 1px 2px white;
 <body>
 
 <div class="titulo">
-<h4>GOBIERNO AUTÓNOMO DESCENTRALIZADO DEL CANTÓN MANTA</h4>
-<h4>UNIDAD DE GESTIÓN Y TITULARIZACIÓN DE TIERRAS</h4>
+<h5>GOBIERNO AUTÓNOMO DESCENTRALIZADO DEL CANTÓN MANTA</h5>
+<h5>UNIDAD DE GESTIÓN Y TITULARIZACIÓN DE TIERRAS</h5>
 
 <img src="imagenmanta.png" class="logo-manta">
 </div>
@@ -544,8 +543,8 @@ var parroquias = L.geoJson(data,{
 style:function(){
 return{
 color:"#333",            // borde
-weight:1,                // un poco más visible
-dashArray:"6,4",         // 👈 líneas punteadas
+weight:1.5,                // un poco más visible
+dashArray:"10,15",         // 👈 líneas punteadas
 fillColor:getColorParroquia(i++),
 fillOpacity:0.2,        // 👈 más transparente
 opacity:0.9              // 👈 borde más visible
