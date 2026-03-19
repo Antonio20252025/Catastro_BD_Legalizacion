@@ -204,45 +204,44 @@ window.addEventListener("load", function(){
 
   var params = new URLSearchParams(window.location.search);
   var token = params.get("token");
+  var fechaExp = params.get("exp");
 
   var TOKEN_VALIDO = "ABC123";
-  var btn = document.getElementById("btnAdmin");
 
-  // 🔴 SI ENTRA CON LINK → NO mostrar botón
-  if(token === TOKEN_VALIDO){
-    if(btn) btn.style.display = "none";
+  // ❌ SI NO HAY TOKEN → BLOQUEAR TODO
+  if(!token){
+    document.body.innerHTML = `
+      <h2 style="text-align:center;margin-top:50px;color:red;">
+      🔒 Acceso restringido
+      </h2>
+    `;
     return;
   }
 
-  // 🟢 SI NO HAY TOKEN → pedir clave admin
-  var clave = prompt("Ingrese clave de administrador");
-
-  if(clave === "admin"){
-    if(btn) btn.style.display = "block";
-  } else {
-    if(btn) btn.style.display = "none";
-  }
-var params = new URLSearchParams(window.location.search);
-var fechaExp = params.get("exp");
-
-if(fechaExp){
-
-  var ahora = new Date();
-  var limite = new Date(fechaExp);
-
-  if(ahora > limite){
-
+  // ❌ SI TOKEN ES INCORRECTO
+  if(token !== TOKEN_VALIDO){
     document.body.innerHTML = `
       <h2 style="text-align:center;margin-top:50px;color:red;">
-      ⛔ Link expirado
+      🔒 Token inválido
       </h2>
     `;
-
-    throw new Error("Link expirado");
+    return;
   }
 
-}
+  // ⏳ VALIDAR EXPIRACIÓN
+  if(fechaExp){
+    var ahora = new Date();
+    var limite = new Date(fechaExp);
 
+    if(ahora > limite){
+      document.body.innerHTML = `
+        <h2 style="text-align:center;margin-top:50px;color:red;">
+        ⛔ Link expirado
+        </h2>
+      `;
+      return;
+    }
+  }
 
 });
 
