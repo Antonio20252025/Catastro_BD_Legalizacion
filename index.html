@@ -141,6 +141,8 @@ font-size: 10px;
 
 }
 
+{delete
+
 </style>
 </head>
 
@@ -154,6 +156,24 @@ font-size: 10px;
 </div>
 
 <div id="mapa"></div>
+
+
+<button id="btnAdmin" style="
+position:fixed;
+top:10px;
+right:10px;
+z-index:2000;
+display:block;
+padding:8px;
+background:#004bad;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+">
+Generar Link
+</button>
+
 
 <div id="controlTiempo">
 Año: <span id="valorAnio">2019</span>
@@ -176,6 +196,60 @@ Buscar Predio<br>
 
 <script>
 
+
+// ================= MODO ADMIN CORREGIDO =================
+
+
+window.addEventListener("load", function(){
+
+  var params = new URLSearchParams(window.location.search);
+  var token = params.get("token");
+
+  var TOKEN_VALIDO = "ABC123";
+  var btn = document.getElementById("btnAdmin");
+
+  // 🔴 SI ENTRA CON LINK → NO mostrar botón
+  if(token === TOKEN_VALIDO){
+    if(btn) btn.style.display = "none";
+    return;
+  }
+
+  // 🟢 SI NO HAY TOKEN → pedir clave admin
+  var clave = prompt("Ingrese clave de administrador");
+
+  if(clave === "admin"){
+    if(btn) btn.style.display = "block";
+  } else {
+    if(btn) btn.style.display = "none";
+  }
+var params = new URLSearchParams(window.location.search);
+var fechaExp = params.get("exp");
+
+if(fechaExp){
+
+  var ahora = new Date();
+  var limite = new Date(fechaExp);
+
+  if(ahora > limite){
+
+    document.body.innerHTML = `
+      <h2 style="text-align:center;margin-top:50px;color:red;">
+      ⛔ Link expirado
+      </h2>
+    `;
+
+    throw new Error("Link expirado");
+  }
+
+}
+
+
+});
+
+
+
+
+
 /* TODO TU SCRIPT ORIGINAL VA AQUÍ
 NO SE MODIFICA NADA */
 // CAPAS BASE
@@ -188,7 +262,7 @@ subdomains:['mt0','mt1','mt2','mt3']
 });
 
 var googleHybrid = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{
-maxZoom:25,
+maxZoom:25	,
 subdomains:['mt0','mt1','mt2','mt3'],
 opacity:0.6
 });
@@ -903,6 +977,47 @@ document.getElementById("textoBuscar").addEventListener("keypress",function(e){
 if(e.key==="Enter"){
 buscarPredio();
 }
+
+});
+
+
+// ================= MODO ADMIN =================
+
+
+document.getElementById("btnAdmin").addEventListener("click", function(){
+
+  var horas = prompt("¿Cuántas HORAS quieres que dure el link?");
+if(!horas) return;
+
+var ahora = new Date();
+ahora.setHours(ahora.getHours() + parseInt(horas));
+
+// 👉 guardamos fecha completa con hora
+var fechaExp = ahora.toISOString();
+
+var urlBase = window.location.origin + window.location.pathname;
+
+var linkFinal = urlBase + "?exp=" + fechaExp + "&token=ABC123";
+
+navigator.clipboard.writeText(linkFinal);
+
+alert("Link generado y copiado:\n" + linkFinal);
+  
+  if(!dias) return;
+
+  var hoy = new Date();
+  hoy.setDate(hoy.getDate() + parseInt(dias));
+
+  var fechaExp = hoy.toISOString().split("T")[0];
+
+  var urlBase = window.location.origin + window.location.pathname;
+
+  var linkFinal = urlBase + "?exp=" + fechaExp + "&token=ABC123";
+
+  // copiar al portapapeles
+  navigator.clipboard.writeText(linkFinal);
+
+  alert("Link generado y copiado:\n" + linkFinal);
 
 });
 
