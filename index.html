@@ -176,6 +176,30 @@ Buscar Predio<br>
 
 <script>
 
+// 👇 PONLO AQUÍ (PRIMERO DE TODO)
+tupagina.html?exp=2026-04-01
+
+// VALIDACIÓN DE LINK
+var params = new URLSearchParams(window.location.search);
+var fechaExp = params.get("exp");
+
+if(fechaExp){
+  var hoy = new Date();
+  var limite = new Date(fechaExp);
+
+  if(hoy > limite){
+    document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;'>Link expirado</h2>";
+    throw new Error("Expirado");
+  }
+}
+
+// 👇 DESPUÉS DE ESTO YA DEJAS TODO TU CÓDIGO IGUAL
+
+/* TODO TU SCRIPT ORIGINAL VA AQUÍ
+NO SE MODIFICA NADA */
+
+  
+
 /* TODO TU SCRIPT ORIGINAL VA AQUÍ
 NO SE MODIFICA NADA */
 // CAPAS BASE
