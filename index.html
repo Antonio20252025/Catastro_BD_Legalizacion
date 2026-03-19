@@ -207,7 +207,7 @@ window.addEventListener("load", function(){
 
   var token = params.get("token");
   var fechaExp = params.get("exp");
-  var adminModo = params.get("Angelic@123");
+  var adminModo = params.get("admin");
 
   var TOKEN_VALIDO = "ABC123";
   var btn = document.getElementById("btnAdmin");
@@ -243,7 +243,7 @@ window.addEventListener("load", function(){
   // 🔐 3. MODO ADMIN NORMAL
   var clave = prompt("Ingrese clave de administrador");
 
-  if(clave === "Angelic@123"){
+  if(clave === "admin"){
     if(btn) btn.style.display = "block";
   }else{
     document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Acceso restringido</h2>";
