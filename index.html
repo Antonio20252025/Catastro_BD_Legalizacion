@@ -176,30 +176,6 @@ Buscar Predio<br>
 
 <script>
 
-// 👇 PONLO AQUÍ (PRIMERO DE TODO)
-tupagina.html?exp=2026-04-01
-
-// VALIDACIÓN DE LINK
-var params = new URLSearchParams(window.location.search);
-var fechaExp = params.get("exp");
-
-if(fechaExp){
-  var hoy = new Date();
-  var limite = new Date(fechaExp);
-
-  if(hoy > limite){
-    document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;'>Link expirado</h2>";
-    throw new Error("Expirado");
-  }
-}
-
-// 👇 DESPUÉS DE ESTO YA DEJAS TODO TU CÓDIGO IGUAL
-
-/* TODO TU SCRIPT ORIGINAL VA AQUÍ
-NO SE MODIFICA NADA */
-
-  
-
 /* TODO TU SCRIPT ORIGINAL VA AQUÍ
 NO SE MODIFICA NADA */
 // CAPAS BASE
@@ -266,6 +242,8 @@ capa.bindPopup("<strong>Clave Catastral: </strong>"+ feature.properties['claveca
 "<strong>Parroquia: </strong>"+ feature.properties['parroquia']+ "<br>" +
 "<strong>barrio: </strong>"+ feature.properties['barrio']+ "<br>" +
 "<strong>RESOLUCION: </strong>"+ feature.properties['RESOLUCION']+ "<br>" +
+"<strong>RIESGOS: </strong>"+ feature.properties['NIVEL_DE_R']+ "<br>" +
+"<strong>COORDENADA: </strong>"+ feature.properties['COORDENA_1']+ "<br>" +
 "<strong>Observación: </strong>"+ feature.properties['observacio']
 
 );
