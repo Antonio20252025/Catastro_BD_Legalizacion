@@ -212,13 +212,13 @@ window.addEventListener("load", function(){
   var TOKEN_VALIDO = "ABC123";
   var btn = document.getElementById("btnAdmin");
 
-  // 🟢 MODO ADMIN DIRECTO (SIN PROMPT)
+  // 🟢 1. ADMIN DIRECTO (PRIORIDAD MÁXIMA)
   if(adminModo === "1"){
     if(btn) btn.style.display = "block";
     return;
   }
 
-  // 🟢 SI VIENE CON LINK
+  // 🟢 2. ACCESO POR LINK
   if(token){
 
     if(token !== TOKEN_VALIDO){
@@ -240,7 +240,7 @@ window.addEventListener("load", function(){
     return;
   }
 
-  // 🔐 MODO ADMIN CON CLAVE
+  // 🔐 3. MODO ADMIN NORMAL
   var clave = prompt("Ingrese clave de administrador");
 
   if(clave === "admin"){
@@ -250,7 +250,6 @@ window.addEventListener("load", function(){
   }
 
 });
-
 
 
 
