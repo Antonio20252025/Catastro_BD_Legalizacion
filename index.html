@@ -204,44 +204,49 @@ Buscar Predio<br>
 window.addEventListener("load", function(){
 
   var params = new URLSearchParams(window.location.search);
+
   var token = params.get("token");
   var fechaExp = params.get("exp");
+  var adminModo = params.get("admin");
 
   var TOKEN_VALIDO = "ABC123";
+  var btn = document.getElementById("btnAdmin");
 
-  // ❌ SI NO HAY TOKEN → BLOQUEAR TODO
-  if(!token){
-    document.body.innerHTML = `
-      <h2 style="text-align:center;margin-top:50px;color:red;">
-      🔒 Acceso restringido
-      </h2>
-    `;
+  // 🟢 MODO ADMIN DIRECTO (SIN PROMPT)
+  if(adminModo === "1"){
+    if(btn) btn.style.display = "block";
     return;
   }
 
-  // ❌ SI TOKEN ES INCORRECTO
-  if(token !== TOKEN_VALIDO){
-    document.body.innerHTML = `
-      <h2 style="text-align:center;margin-top:50px;color:red;">
-      🔒 Token inválido
-      </h2>
-    `;
-    return;
-  }
+  // 🟢 SI VIENE CON LINK
+  if(token){
 
-  // ⏳ VALIDAR EXPIRACIÓN
-  if(fechaExp){
-    var ahora = new Date();
-    var limite = new Date(fechaExp);
-
-    if(ahora > limite){
-      document.body.innerHTML = `
-        <h2 style="text-align:center;margin-top:50px;color:red;">
-        ⛔ Link expirado
-        </h2>
-      `;
+    if(token !== TOKEN_VALIDO){
+      document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Token inválido</h2>";
       return;
     }
+
+    if(fechaExp){
+      var ahora = new Date();
+      var limite = new Date(fechaExp);
+
+      if(ahora > limite){
+        document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>⛔ Link expirado</h2>";
+        return;
+      }
+    }
+
+    if(btn) btn.style.display = "none";
+    return;
+  }
+
+  // 🔐 MODO ADMIN CON CLAVE
+  var clave = prompt("Ingrese clave de administrador");
+
+  if(clave === "admin"){
+    if(btn) btn.style.display = "block";
+  }else{
+    document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Acceso restringido</h2>";
   }
 
 });
