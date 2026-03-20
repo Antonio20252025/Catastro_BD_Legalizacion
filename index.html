@@ -219,26 +219,32 @@ window.addEventListener("load", function(){
   }
 
   // 🟢 2. ACCESO POR LINK
+  
   if(token){
 
-    if(token !== TOKEN_VALIDO){
-      document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Token inválido</h2>";
-      return;
-    }
-
-    if(fechaExp){
-      var ahora = new Date();
-      var limite = new Date(fechaExp);
-
-      if(ahora > limite){
-        document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>⛔ Link expirado</h2>";
-        return;
-      }
-    }
-
-    if(btn) btn.style.display = "none";
+  if(token !== TOKEN_VALIDO){
+    document.body.innerHTML = "🔒 Token inválido";
     return;
   }
+
+  if(fechaExp){
+    var ahora = new Date();
+    var limite = new Date(fechaExp);
+
+    if(ahora > limite){
+      document.body.innerHTML = "⛔ Link expirado";
+      return;
+    }
+  }
+
+  // 🔥 OCULTAR PARÁMETROS (aquí va)
+  setTimeout(function(){
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }, 10);
+
+  if(btn) btn.style.display = "none";
+  return;
+}
 
   // 🔐 3. MODO ADMIN NORMAL
   var clave = prompt("Ingrese clave de administrador");
