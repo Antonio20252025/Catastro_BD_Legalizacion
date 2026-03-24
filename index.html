@@ -219,7 +219,6 @@ window.addEventListener("load", function(){
   }
 
   // 🟢 2. ACCESO POR LINK
-  
   if(token){
 
   if(token !== TOKEN_VALIDO){
@@ -312,7 +311,7 @@ fillOpacity:0.5
 }
 },
 
-onEachFeature: function (feature, capa){autoPan:false
+onEachFeature: function (feature, capa){console.log(feature.properties);
 
 capa.bindPopup("<strong>Clave Catastral: </strong>"+ feature.properties['clavecatas'] + "<br>" +
 "<strong>Zona: </strong>"+ feature.properties['zona'] + "<br>" +
@@ -326,6 +325,8 @@ capa.bindPopup("<strong>Clave Catastral: </strong>"+ feature.properties['claveca
 "<strong>Parroquia: </strong>"+ feature.properties['parroquia']+ "<br>" +
 "<strong>Barrio: </strong>"+ feature.properties['barrio']+ "<br>" +
 "<strong>Resolución: </strong>"+ feature.properties['RESOLUCION']+ "<br>" +
+"<strong>etam: </strong>"+ feature.properties['etam']+ "<br>" +
+"<strong>Columna2: </strong>"+ feature.properties['Columna2']+ "<br>" +
 "<strong>Observación: </strong>"+ feature.properties['observacio']
 
 );
@@ -994,41 +995,30 @@ buscarPredio();
 
 document.getElementById("btnAdmin").addEventListener("click", function(){
 
-  var horas = prompt("¿Cuántas HORAS quieres que dure el link?");
-if(!horas) return;
+  var minutos = prompt("¿Cuántos MINUTOS quieres que dure el link? (60 = 1 hora)");
 
-var ahora = new Date();
-ahora.setHours(ahora.getHours() + parseInt(horas));
+  if(!minutos) return;
 
-// 👉 guardamos fecha completa con hora
-var fechaExp = ahora.toISOString();
+  minutos = parseInt(minutos);
+  if(isNaN(minutos) || minutos <= 0){
+    minutos = 60;
+  }
 
-var urlBase = window.location.origin + window.location.pathname;
+  var ahora = new Date();
+  ahora.setMinutes(ahora.getMinutes() + minutos);
 
-var linkFinal = urlBase + "?exp=" + fechaExp + "&token=ABC123";
-
-navigator.clipboard.writeText(linkFinal);
-
-alert("Link generado y copiado:\n" + linkFinal);
-  
-  if(!dias) return;
-
-  var hoy = new Date();
-  hoy.setDate(hoy.getDate() + parseInt(dias));
-
-  var fechaExp = hoy.toISOString().split("T")[0];
+  var fechaExp = ahora.toISOString();
 
   var urlBase = window.location.origin + window.location.pathname;
 
   var linkFinal = urlBase + "?exp=" + fechaExp + "&token=ABC123";
 
-  // copiar al portapapeles
   navigator.clipboard.writeText(linkFinal);
 
-  alert("Link generado y copiado:\n" + linkFinal);
+  // 👉 AQUÍ VA
+  alert("Link válido por " + minutos + " minutos\n\n" + linkFinal);
 
 });
-
 </script>
 
 </body>
