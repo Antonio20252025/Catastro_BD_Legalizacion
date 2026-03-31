@@ -193,6 +193,8 @@ Buscar Predio<br>
 
 <button onclick="buscarPredio()">Buscar</button>
 
+<button onclick="iniciarVoz()">🎤 Hablar</button>
+
 </div>
 
 <script>
@@ -1017,6 +1019,45 @@ document.getElementById("btnAdmin").addEventListener("click", function(){
 
   // 👉 AQUÍ VA
   alert("Link válido por " + minutos + " minutos\n\n" + linkFinal);
+  
+  
+  
+  function iniciarVoz(){
+
+  // Verificar compatibilidad
+  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+    alert("Tu navegador no soporta reconocimiento de voz");
+    return;
+  }
+
+  var reconocimiento = new SpeechRecognition();
+
+  reconocimiento.lang = "es-ES"; // español
+  reconocimiento.interimResults = false;
+  reconocimiento.maxAlternatives = 1;
+
+  reconocimiento.start();
+
+  reconocimiento.onresult = function(event){
+
+    var texto = event.results[0][0].transcript;
+
+    // poner lo hablado en el input
+    document.getElementById("textoBuscar").value = texto;
+
+    // ejecutar búsqueda automáticamente
+    buscarPredio();
+
+  };
+
+  reconocimiento.onerror = function(event){
+    console.log("Error voz:", event.error);
+    alert("Error en reconocimiento de voz");
+  };
+
+}
 
 });
 </script>
