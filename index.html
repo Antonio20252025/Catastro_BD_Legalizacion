@@ -550,7 +550,7 @@ function iniciarVoz(){
 
   var reconocimiento = new SpeechRecognition();
 
-  reconocimiento.lang = "es-ES"; // español
+  reconocimiento.lang = "es-EC"; // español
   reconocimiento.interimResults = false;
   reconocimiento.maxAlternatives = 1;
 
@@ -561,6 +561,19 @@ function iniciarVoz(){
     var texto = event.results[0][0].transcript;
 	
 	console.log("Texto detectado:", texto); // 👈 AGREGA ESTO
+
+	    // 👇 REEMPLAZOS PERSONALIZADOS
+  texto = texto
+    .replace(/raya/g, "-")
+    .replace(/guion/g, "-")
+    .replace(/guión/g, "-")
+    .replace(/slash/g, "/")
+    .replace(/barra/g, "/")
+    .replace(/punto/g, ".")
+    .replace(/coma/g, ",")
+    .replace(/espacio/g, " ")
+    .replace(/guion bajo/g, "_");
+
 	
     // poner lo hablado en el input
     document.getElementById("textoBuscar").value = texto;
