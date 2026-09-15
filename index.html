@@ -146,84 +146,6 @@ width:100%;
 
 }
 
-/* =====================================================
-   NUEVO CUADRO: PREDIOS POR CENSAR
-   Se agrega sin modificar el cuadro histórico.
-===================================================== */
-
-#controlCenso{
-position:absolute;
-bottom:15px;
-left:300px;
-width:265px;
-box-sizing:border-box;
-background:white;
-border:2px solid red;
-border-radius:10px;
-padding:10px;
-z-index:1200;
-font-family:Arial;
-font-weight:bold;
-text-align:center;
-box-shadow:0 0 5px gray;
-}
-
-#controlCenso .tituloCenso{
-color:red;
-font-size:17px;
-font-weight:bold;
-line-height:1.1;
-}
-
-#controlCenso .numeroCenso{
-color:#cc5500;
-font-size:31px;
-font-weight:bold;
-margin:8px 0;
-}
-
-#controlCenso button{
-width:130px;
-height:40px;
-border:none;
-border-radius:7px;
-background:red;
-color:white;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
-
-#controlCenso button:hover{
-background:#cc0000;
-}
-
-@media(max-width:768px){
-
-#controlCenso{
-left:10px;
-bottom:180px;
-width:180px;
-padding:8px;
-}
-
-#controlCenso .tituloCenso{
-font-size:12px;
-}
-
-#controlCenso .numeroCenso{
-font-size:24px;
-margin:6px 0;
-}
-
-#controlCenso button{
-width:120px;
-height:36px;
-font-size:13px;
-}
-
-}
-
 .legend{
 
 font-size:10px;
@@ -294,6 +216,33 @@ max-width:180px;
 
 }
 
+}
+
+
+/* ===== AGREGADO: PREDIOS POR CENSAR 487 ===== */
+#controlCenso{
+position:absolute;
+bottom:15px;
+left:300px;
+background:white;
+padding:10px;
+border-radius:8px;
+box-shadow:0 0 5px gray;
+z-index:1000;
+font-weight:bold;
+max-width:260px;
+text-align:center;
+border:2px solid red;
+}
+#controlCenso .tituloCenso{color:red;font-size:17px;font-weight:bold;}
+#controlCenso .numeroCenso{color:#cc5500;font-size:31px;font-weight:bold;margin:7px 0;}
+#controlCenso button{margin-top:5px;width:130px;height:40px;background:red;color:white;border:none;border-radius:7px;font-size:16px;font-weight:bold;cursor:pointer;}
+#controlCenso button:hover{background:#cc0000;}
+@media(max-width:768px){
+#controlCenso{left:205px;bottom:10px;font-size:12px;padding:8px;max-width:180px;}
+#controlCenso .tituloCenso{font-size:12px;}
+#controlCenso .numeroCenso{font-size:24px;}
+#controlCenso button{width:120px;height:36px;font-size:13px;}
 }
 
 </style>
@@ -394,25 +343,11 @@ Mover barra para iniciar
 
 </div>
 
-
-<!-- =====================================================
-     NUEVO CUADRO: PREDIOS POR CENSAR
-===================================================== -->
-
+<!-- ===== AGREGADO: PREDIOS POR CENSAR ===== -->
 <div id="controlCenso">
-
-<div class="tituloCenso">
-PREDIOS POR CENSAR
-</div>
-
-<div class="numeroCenso" id="numeroCenso">
-487
-</div>
-
-<button id="btnCenso" onclick="mostrarPrediosCensar()">
-MOSTRAR
-</button>
-
+<div class="tituloCenso">PREDIOS POR CENSAR</div>
+<div class="numeroCenso" id="numeroCenso">487</div>
+<button id="btnCenso" onclick="mostrarPrediosCensar()">MOSTRAR</button>
 </div>
 
 
@@ -540,8 +475,7 @@ return;
 }
 
 
-var clave=prompt("Ingrese clave de
-administrador");
+var clave=prompt("Ingrese clave de administrador");
 
 
 if(clave==="Manta2026"){
@@ -556,11 +490,9 @@ btn.style.display="block";
 
 document.body.innerHTML=
 
-"<h2
-style='text-align:center;margin-top:50px;color:red;'>"+
+"<h2 style='text-align:center;margin-top:50px;color:red;'>"+
 
-"🔒 Acceso
-restringido"+
+"🔒 Acceso restringido"+
 
 "</h2>";
 
@@ -884,483 +816,197 @@ var prediosPorAnio={
 ===================================================== */
 
 var totalHistorico=3933;
+
 /* =====================================================
-   PREDIOS POR CENSAR - 487
-   CAPA INDEPENDIENTE
-   No se agrega a obtenerCapas(), por lo que el código
-   histórico original sigue funcionando por separado.
+   AGREGADO: PREDIOS POR CENSAR - 487
+   NO MODIFICA EL CODIGO PRINCIPAL
 ===================================================== */
 
 var capaPrediosCensar=null;
 var modoPrediosCensar=false;
-var parpadeoCensoActivo=false;
+var predioCensarSeleccionado=null;
 var estadoParpadeoCenso=true;
 
 var URL_PREDIOS_CENSAR=
 "https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/487_Predios.geojson";
 
-
-/* Escapar valores para el popup. */
-function escaparHTML(valor){
-
-if(valor===null || valor===undefined){
-return "";
-}
-
+function escaparHTMLCenso(valor){
+if(valor===null || valor===undefined){ return ""; }
 return String(valor)
 .replace(/&/g,"&amp;")
 .replace(/</g,"&lt;")
 .replace(/>/g,"&gt;")
 .replace(/"/g,"&quot;")
 .replace(/'/g,"&#039;");
-
 }
-
-
-/* =====================================================
-   INFORMACIÓN DEL PREDIO POR CENSAR
-   Muestra solamente los atributos de 487_Predios.geojson.
-===================================================== */
 
 function popupPredioCensar(feature){
-
 var p=feature.properties || {};
-
-var htmlPopup=
-"<div style='min-width:230px;max-width:320px;'>" +
-"<div style='font-weight:bold;color:red;font-size:16px;margin-bottom:8px;'>" +
-"PREDIO POR CENSAR" +
-"</div>";
-
-var campos=Object.keys(p);
-
-if(campos.length===0){
-
-htmlPopup +=
-"<strong>Sin información de atributos</strong>";
-
-}else{
-
-campos.forEach(function(campo){
-
+var html="<div style='min-width:230px;max-width:330px;'>"+
+"<div style='font-weight:bold;color:red;font-size:16px;margin-bottom:8px;'>PREDIO POR CENSAR</div>";
+Object.keys(p).forEach(function(campo){
 var valor=p[campo];
-
-if(valor===null || valor===undefined){
-valor="";
-}
-
-htmlPopup +=
-"<div style='margin-bottom:4px;'>" +
-"<strong>" + escaparHTML(campo) + ":</strong> " +
-escaparHTML(valor) +
-"</div>";
-
+if(valor===null || valor===undefined){ valor=""; }
+html+="<div style='margin-bottom:4px;'><strong>"+
+escaparHTMLCenso(campo)+
+":</strong> "+
+escaparHTMLCenso(valor)+"</div>";
 });
-
+html+="</div>";
+return html;
 }
 
-htmlPopup += "</div>";
-
-return htmlPopup;
-
+function estiloCensoNormal(layer){
+if(predioCensarSeleccionado===layer){
+layer.setStyle({color:"red",weight:4,opacity:1,fillColor:"orange",fillOpacity:0.95});
+return;
 }
-
-
-/* =====================================================
-   CREAR CAPA 487
-===================================================== */
-
-function crearCapaPrediosCensar(datos){
-
-return L.geoJson(datos,{
-
-style:function(){
-
-return{
-
+layer.setStyle({
 color:"red",
 weight:2.5,
-opacity:1,
+opacity:estadoParpadeoCenso ? 1 : 0.30,
 fillColor:"yellow",
-fillOpacity:0.75
+fillOpacity:estadoParpadeoCenso ? 0.70 : 0.10
+});
+}
 
-};
-
+function crearCapaPrediosCensar(datos){
+return L.geoJson(datos,{
+style:function(){
+return {color:"red",weight:2.5,opacity:1,fillColor:"yellow",fillOpacity:0.70};
 },
-
 onEachFeature:function(feature,layer){
 
-layer.bindPopup(
-popupPredioCensar(feature),
-{
+/* Un solo popup: Leaflet cierra el anterior cuando se abre otro. */
+layer.bindPopup(popupPredioCensar(feature),{
 closeButton:true,
 autoClose:true,
 closeOnClick:true
-}
-);
-
-
-/* =====================================================
-   UN SOLO POPUP A LA VEZ
-   Al tocar otro predio, Leaflet cierra el anterior.
-===================================================== */
-
-layer.on("click",function(){
-
-/* Cerrar cualquier popup anterior */
-map.closePopup();
-
-/* Resaltar solamente el predio seleccionado */
-if(window.predioCensarSeleccionado &&
-window.predioCensarSeleccionado !== this){
-
-window.predioCensarSeleccionado.setStyle({
-
-color:"red",
-weight:2.5,
-opacity:1,
-fillColor:"yellow",
-fillOpacity:0.75
-
 });
 
+/* CLICK: abre SOLO el predio tocado. */
+layer.on("click",function(){
+
+if(predioCensarSeleccionado && predioCensarSeleccionado!==this){
+
+estiloCensoNormal(predioCensarSeleccionado);
 }
 
-window.predioCensarSeleccionado=this;
+map.closePopup();
+predioCensarSeleccionado=this;
 
 this.setStyle({
-
 color:"red",
 weight:4,
 opacity:1,
 fillColor:"orange",
 fillOpacity:0.95
-
 });
 
 this.bringToFront();
-
 this.openPopup();
-
 });
 
-
-/* =====================================================
-   MOUSEOVER SOLO RESALTA.
-   NO ABRE VENTANAS.
-===================================================== */
-
+/* MOUSEOVER: SOLO resalta. NO abre popup. */
 layer.on("mouseover",function(){
-
-if(window.predioCensarSeleccionado !== this){
-
+if(predioCensarSeleccionado!==this){
 this.setStyle({
-
 color:"red",
 weight:3,
 opacity:1,
 fillColor:"yellow",
 fillOpacity:0.85
-
 });
-
 }
-
 });
 
-
+/* MOUSEOUT: vuelve al parpadeo normal. */
 layer.on("mouseout",function(){
-
-if(window.predioCensarSeleccionado !== this){
-
-this.setStyle({
-
-color:"red",
-weight:2.5,
-opacity:estadoParpadeoCenso ? 1 : 0.35,
-fillColor:"yellow",
-fillOpacity:estadoParpadeoCenso ? 0.75 : 0.12
-
-});
-
+if(predioCensarSeleccionado!==this){
+estiloCensoNormal(this);
 }
-
 });
-
 }
-
 });
-
 }
-
-
-/* =====================================================
-   CARGAR 487_PREDIOS.GEOJSON
-===================================================== */
 
 function cargarPrediosCensar(){
-
 if(capaPrediosCensar){
-
 activarModoPrediosCensar();
-
 return;
-
 }
 
 fetch(URL_PREDIOS_CENSAR)
-
 .then(function(r){
-
-if(!r.ok){
-
-throw new Error(
-"HTTP " + r.status + " - " + URL_PREDIOS_CENSAR
-);
-
-}
-
+if(!r.ok){ throw new Error("HTTP "+r.status); }
 return r.json();
-
 })
-
 .then(function(data){
-
-capaPrediosCensar=
-crearCapaPrediosCensar(data);
-
+var cantidad=(data.features && data.features.length) ? data.features.length : 487;
+document.getElementById("numeroCenso").innerHTML=cantidad;
+capaPrediosCensar=crearCapaPrediosCensar(data);
 activarModoPrediosCensar();
-
 })
-
 .catch(function(error){
-
-console.error(
-"Error cargando 487_Predios.geojson:",
-error
-);
-
-alert(
-"No se pudo cargar 487_Predios.geojson.\n\n" +
-"Revise que el archivo exista en GitHub y que el nombre sea 487_Predios.geojson."
-);
-
+console.error("Error cargando 487_Predios.geojson:",error);
+alert("No se pudo cargar 487_Predios.geojson.");
 });
-
 }
-
-
-/* =====================================================
-   BOTÓN MOSTRAR / OCULTAR
-===================================================== */
-
-function mostrarPrediosCensar(){
-
-if(!capaPrediosCensar){
-
-cargarPrediosCensar();
-
-return;
-
-}
-
-if(modoPrediosCensar){
-
-desactivarModoPrediosCensar();
-
-}else{
-
-activarModoPrediosCensar();
-
-}
-
-}
-
-
-/* =====================================================
-   ACTIVAR MODO PREDIOS POR CENSAR
-   Al activarlo se ocultan las capas históricas.
-   Así la información del mapa queda exclusivamente
-   en 487_Predios.geojson.
-===================================================== */
 
 function activarModoPrediosCensar(){
+if(!capaPrediosCensar){ return; }
 
-if(!capaPrediosCensar){
-return;
-}
-
-
-/* Ocultar SOLO las capas históricas originales. */
+/* Oculta temporalmente solo las capas historicas. */
 obtenerCapas().forEach(function(capa){
-
-if(capa && map.hasLayer(capa)){
-
-map.removeLayer(capa);
-
-}
-
+if(capa && map.hasLayer(capa)){ map.removeLayer(capa); }
 });
 
 modoPrediosCensar=true;
-
+predioCensarSeleccionado=null;
+map.closePopup();
 map.addLayer(capaPrediosCensar);
 
-
-/* Ajustar vista a los 487 predios. */
-try{
-
-if(capaPrediosCensar.getBounds().isValid()){
-
-map.fitBounds(
-capaPrediosCensar.getBounds(),
-{
-padding:[20,20],
-maxZoom:17
-}
-);
-
-}
-
-}catch(e){
-
-console.warn(
-"No se pudo ajustar el mapa a 487_Predios:",
-e
-);
-
-}
-
-
-/* Estado inicial del parpadeo. */
-estadoParpadeoCenso=true;
-
-capaPrediosCensar.eachLayer(function(layer){
-
-layer._censoHover=false;
-
-layer.setStyle({
-
-color:"red",
-weight:2.5,
-opacity:1,
-fillColor:"yellow",
-fillOpacity:0.75
-
-});
-
-});
-
-
 var boton=document.getElementById("btnCenso");
-
-if(boton){
-
-boton.innerHTML="OCULTAR";
-
+if(boton){ boton.innerHTML="OCULTAR"; }
 }
-
-}
-
-
-/* =====================================================
-   DESACTIVAR 487 Y RECUPERAR EL AÑO ORIGINAL
-===================================================== */
 
 function desactivarModoPrediosCensar(){
-
 if(capaPrediosCensar && map.hasLayer(capaPrediosCensar)){
-
 map.removeLayer(capaPrediosCensar);
-
 }
 
+map.closePopup();
+predioCensarSeleccionado=null;
 modoPrediosCensar=false;
 
 var boton=document.getElementById("btnCenso");
+if(boton){ boton.innerHTML="MOSTRAR"; }
 
-if(boton){
-
-boton.innerHTML="MOSTRAR";
-
+/* Recupera exactamente el estado del slider original. */
+if(slider){ slider.oninput(); }
 }
 
-
-/* Recupera exactamente la selección del slider. */
-if(slider){
-
-slider.oninput();
-
-}
-
-}
-
-
-/* =====================================================
-   PARPADEO EXCLUSIVO DE LOS 487 PREDIOS
-===================================================== */
-
-function activarParpadeoPrediosCensar(){
-
-if(parpadeoCensoActivo){
+function mostrarPrediosCensar(){
+if(!capaPrediosCensar){
+cargarPrediosCensar();
 return;
 }
-
-parpadeoCensoActivo=true;
-
-setInterval(function(){
-
-if(!capaPrediosCensar || !modoPrediosCensar){
-return;
-}
-
-estadoParpadeoCenso=!estadoParpadeoCenso;
-
-capaPrediosCensar.eachLayer(function(layer){
-
-/* Si el mouse está sobre el predio, no quitar
-   el resaltado ni el popup. */
-if(layer._censoHover){
-return;
-}
-
-if(estadoParpadeoCenso){
-
-layer.setStyle({
-
-color:"red",
-weight:2.5,
-opacity:1,
-fillColor:"yellow",
-fillOpacity:0.75
-
-});
-
+if(modoPrediosCensar){
+desactivarModoPrediosCensar();
 }else{
-
-layer.setStyle({
-
-color:"red",
-weight:2.5,
-opacity:0.35,
-fillColor:"yellow",
-fillOpacity:0.12
-
-});
-
+activarModoPrediosCensar();
+}
 }
 
+/* Parpadeo independiente de los 487. */
+setInterval(function(){
+if(!capaPrediosCensar || !modoPrediosCensar){ return; }
+estadoParpadeoCenso=!estadoParpadeoCenso;
+capaPrediosCensar.eachLayer(function(layer){
+if(predioCensarSeleccionado===layer){ return; }
+estiloCensoNormal(layer);
 });
-
-},500);
-
-}
-
-
-/* Iniciar el temporizador independiente. */
-activarParpadeoPrediosCensar();
-
-
+},400);
 
 
 
@@ -2679,8 +2325,7 @@ div.innerHTML+=
 
 colores[i]+
 
-'; width:18px; height:18px; display:inline-block;
-margin-right:5px;"></i> '+
+'; width:18px; height:18px; display:inline-block; margin-right:5px;"></i> '+
 
 años[i]+
 
@@ -2715,8 +2360,7 @@ function(){
 
 var minutos=prompt(
 
-"¿Cuántos MINUTOS quieres que dure el link? (60 = 1
-hora)"
+"¿Cuántos MINUTOS quieres que dure el link? (60 = 1 hora)"
 
 );
 
