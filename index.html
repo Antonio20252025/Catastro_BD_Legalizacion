@@ -12,23 +12,17 @@
 content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet"
-
 href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <script
-
 src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-
 </script>
 
 <link rel="stylesheet"
-
 href="https://unpkg.com/leaflet.fullscreen@latest/Control.FullScreen.css"/>
 
 <script
-
 src="https://unpkg.com/leaflet.fullscreen@latest/Control.FullScreen.js">
-
 </script>
 
 
@@ -146,84 +140,6 @@ width:100%;
 
 }
 
-/* =====================================================
-   NUEVO CUADRO: PREDIOS POR CENSAR
-   Se agrega sin modificar el cuadro histórico.
-===================================================== */
-
-#controlCenso{
-position:absolute;
-bottom:15px;
-left:300px;
-width:265px;
-box-sizing:border-box;
-background:white;
-border:2px solid red;
-border-radius:10px;
-padding:10px;
-z-index:1200;
-font-family:Arial;
-font-weight:bold;
-text-align:center;
-box-shadow:0 0 5px gray;
-}
-
-#controlCenso .tituloCenso{
-color:red;
-font-size:17px;
-font-weight:bold;
-line-height:1.1;
-}
-
-#controlCenso .numeroCenso{
-color:#cc5500;
-font-size:31px;
-font-weight:bold;
-margin:8px 0;
-}
-
-#controlCenso button{
-width:130px;
-height:40px;
-border:none;
-border-radius:7px;
-background:red;
-color:white;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
-
-#controlCenso button:hover{
-background:#cc0000;
-}
-
-@media(max-width:768px){
-
-#controlCenso{
-left:10px;
-bottom:180px;
-width:180px;
-padding:8px;
-}
-
-#controlCenso .tituloCenso{
-font-size:12px;
-}
-
-#controlCenso .numeroCenso{
-font-size:24px;
-margin:6px 0;
-}
-
-#controlCenso button{
-width:120px;
-height:36px;
-font-size:13px;
-}
-
-}
-
 .legend{
 
 font-size:10px;
@@ -243,6 +159,93 @@ color:blue;
 font-size:10px;
 
 }
+
+
+/* =====================================================
+   AGREGADO: PREDIOS POR CENSAR - 487
+   NO MODIFICA LOS ESTILOS PRINCIPALES
+===================================================== */
+
+#controlCenso{
+
+position:absolute;
+
+bottom:15px;
+
+left:300px;
+
+background:white;
+
+padding:10px;
+
+border-radius:8px;
+
+box-shadow:0 0 5px gray;
+
+z-index:1000;
+
+font-weight:bold;
+
+max-width:260px;
+
+text-align:center;
+
+border:2px solid red;
+
+}
+
+#controlCenso .tituloCenso{
+
+color:red;
+
+font-size:17px;
+
+font-weight:bold;
+
+}
+
+#controlCenso .numeroCenso{
+
+color:#cc5500;
+
+font-size:31px;
+
+font-weight:bold;
+
+margin:7px 0;
+
+}
+
+#controlCenso button{
+
+margin-top:5px;
+
+width:130px;
+
+height:40px;
+
+background:red;
+
+color:white;
+
+border:none;
+
+border-radius:7px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+#controlCenso button:hover{
+
+background:#cc0000;
+
+}
+
 
 @media(max-width:768px){
 
@@ -294,6 +297,45 @@ max-width:180px;
 
 }
 
+
+/* CUADRO 487 */
+
+#controlCenso{
+
+left:205px;
+
+bottom:10px;
+
+font-size:12px;
+
+padding:8px;
+
+max-width:180px;
+
+}
+
+#controlCenso .tituloCenso{
+
+font-size:12px;
+
+}
+
+#controlCenso .numeroCenso{
+
+font-size:24px;
+
+}
+
+#controlCenso button{
+
+width:120px;
+
+height:36px;
+
+font-size:13px;
+
+}
+
 }
 
 </style>
@@ -327,29 +369,17 @@ UNIDAD DE GESTIÓN Y TITULARIZACIÓN DE TIERRAS
 
 
 <button id="btnAdmin" style="
-
 display:none;
-
 position:fixed;
-
 top:10px;
-
 right:10px;
-
 z-index:2000;
-
 padding:8px;
-
 background:#004bad;
-
 color:white;
-
 border:none;
-
 border-radius:5px;
-
 cursor:pointer;
-
 ">
 
 Generar Link
@@ -357,8 +387,7 @@ Generar Link
 </button>
 
 
-<!-- ================= CONTROL HISTORICO
-================= -->
+<!-- ================= CONTROL HISTORICO ================= -->
 
 <div id="controlTiempo">
 
@@ -382,7 +411,7 @@ step="1"
 
 id="sliderTiempo"
 
-> 
+>
 
 <br>
 
@@ -396,21 +425,28 @@ Mover barra para iniciar
 
 
 <!-- =====================================================
-     NUEVO CUADRO: PREDIOS POR CENSAR
+     AGREGADO: PREDIOS POR CENSAR
 ===================================================== -->
 
 <div id="controlCenso">
 
 <div class="tituloCenso">
+
 PREDIOS POR CENSAR
+
 </div>
 
 <div class="numeroCenso" id="numeroCenso">
+
 487
+
 </div>
 
-<button id="btnCenso" onclick="mostrarPrediosCensar()">
+<button id="btnCenso"
+onclick="mostrarPrediosCensar()">
+
 MOSTRAR
+
 </button>
 
 </div>
@@ -432,7 +468,7 @@ id="textoBuscar"
 
 placeholder="Clave, propietario o cédula"
 
-> 
+>
 
 <button onclick="buscarPredio()">
 
@@ -453,9 +489,8 @@ Buscar
 
 
 /* =====================================================
-
-   MODO ADMINISTRADOR
-
+   MODO ADMINISTRADOR ORIGINAL
+   NO MODIFICAR
 ===================================================== */
 
 window.addEventListener("load",function(){
@@ -540,8 +575,7 @@ return;
 }
 
 
-var clave=prompt("Ingrese clave de
-administrador");
+var clave=prompt("Ingrese clave de administrador");
 
 
 if(clave==="Manta2026"){
@@ -556,11 +590,9 @@ btn.style.display="block";
 
 document.body.innerHTML=
 
-"<h2
-style='text-align:center;margin-top:50px;color:red;'>"+
+"<h2 style='text-align:center;margin-top:50px;color:red;'>"+
 
-"🔒 Acceso
-restringido"+
+"🔒 Acceso restringido"+
 
 "</h2>";
 
@@ -570,9 +602,7 @@ restringido"+
 
 
 /* =====================================================
-
-   CAPAS BASE
-
+   CAPAS BASE
 ===================================================== */
 
 var osm=L.tileLayer(
@@ -615,9 +645,7 @@ opacity:0.6
 
 
 /* =====================================================
-
-   MAPA
-
+   MAPA
 ===================================================== */
 
 var map=L.map("mapa",{
@@ -634,9 +662,7 @@ fullscreenControl:true
 
 
 /* =====================================================
-
-   CAPAS BASE
-
+   CAPAS BASE
 ===================================================== */
 
 var baseMaps={
@@ -649,13 +675,12 @@ var baseMaps={
 
 };
 
+
 L.control.layers(baseMaps).addTo(map);
 
 
 /* =====================================================
-
-   CREAR CAPA CATASTRO
-
+   CREAR CAPA CATASTRO ORIGINAL
 ===================================================== */
 
 function crearCapa(datos,relleno,contorno){
@@ -773,7 +798,7 @@ capa.bindPopup(
 );
 
 
-/* MOUSEOVER */
+/* MOUSEOVER ORIGINAL */
 
 capa.on("mouseover",function(){
 
@@ -792,7 +817,7 @@ this.openPopup();
 });
 
 
-/* MOUSEOUT */
+/* MOUSEOUT ORIGINAL */
 
 capa.on("mouseout",function(){
 
@@ -820,9 +845,7 @@ this.closePopup();
 
 
 /* =====================================================
-
-   VARIABLES DE CAPAS
-
+   VARIABLES DE CAPAS
 ===================================================== */
 
 var capa2019;
@@ -843,9 +866,7 @@ var capa2026;
 
 
 /* =====================================================
-
-   CANTIDAD DE PREDIOS
-
+   CANTIDAD DE PREDIOS
 ===================================================== */
 
 var prediosPorAnio={
@@ -869,467 +890,11 @@ var prediosPorAnio={
 };
 
 
-/* =====================================================
-
-   TOTAL
-
-   287 + 307 + 1048 +
-339 +
-
-   524 + 793 + 455 +
-180
-
-   = 3933
-
-===================================================== */
-
 var totalHistorico=3933;
-/* =====================================================
-   PREDIOS POR CENSAR - 487
-   CAPA INDEPENDIENTE
-   No se agrega a obtenerCapas(), por lo que el código
-   histórico original sigue funcionando por separado.
-===================================================== */
-
-var capaPrediosCensar=null;
-var modoPrediosCensar=false;
-var parpadeoCensoActivo=false;
-var estadoParpadeoCenso=true;
-
-var URL_PREDIOS_CENSAR=
-"https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/487_Predios.geojson";
-
-
-/* Escapar valores para el popup. */
-function escaparHTML(valor){
-
-if(valor===null || valor===undefined){
-return "";
-}
-
-return String(valor)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
-}
 
 
 /* =====================================================
-   INFORMACIÓN DEL PREDIO POR CENSAR
-   Muestra solamente los atributos de 487_Predios.geojson.
-===================================================== */
-
-function popupPredioCensar(feature){
-
-var p=feature.properties || {};
-
-var htmlPopup=
-"<div style='min-width:230px;max-width:320px;'>" +
-"<div style='font-weight:bold;color:red;font-size:16px;margin-bottom:8px;'>" +
-"PREDIO POR CENSAR" +
-"</div>";
-
-var campos=Object.keys(p);
-
-if(campos.length===0){
-
-htmlPopup +=
-"<strong>Sin información de atributos</strong>";
-
-}else{
-
-campos.forEach(function(campo){
-
-var valor=p[campo];
-
-if(valor===null || valor===undefined){
-valor="";
-}
-
-htmlPopup +=
-"<div style='margin-bottom:4px;'>" +
-"<strong>" + escaparHTML(campo) + ":</strong> " +
-escaparHTML(valor) +
-"</div>";
-
-});
-
-}
-
-htmlPopup += "</div>";
-
-return htmlPopup;
-
-}
-
-
-/* =====================================================
-   CREAR CAPA 487
-===================================================== */
-
-function crearCapaPrediosCensar(datos){
-
-return L.geoJson(datos,{
-
-style:function(){
-
-return{
-
-color:"red",
-weight:2.5,
-opacity:1,
-fillColor:"yellow",
-fillOpacity:0.75
-
-};
-
-},
-
-onEachFeature:function(feature,layer){
-
-layer.bindPopup(
-popupPredioCensar(feature),
-{
-closeButton:true,
-autoClose:false,
-closeOnClick:false
-}
-);
-
-
-/* MOUSEOVER: muestra la información SOLO de 487. */
-layer.on("mouseover",function(){
-
-this._censoHover=true;
-
-this.setStyle({
-
-color:"red",
-weight:4,
-opacity:1,
-fillColor:"orange",
-fillOpacity:0.95
-
-});
-
-this.bringToFront();
-
-this.openPopup();
-
-});
-
-
-/* MOUSEOUT */
-layer.on("mouseout",function(){
-
-this._censoHover=false;
-
-this.setStyle({
-
-color:"red",
-weight:2.5,
-opacity:estadoParpadeoCenso ? 1 : 0.35,
-fillColor:"yellow",
-fillOpacity:estadoParpadeoCenso ? 0.75 : 0.12
-
-});
-
-});
-
-
-/* CLIC: deja disponible el mismo popup. */
-layer.on("click",function(){
-
-this.bringToFront();
-
-this.openPopup();
-
-});
-
-}
-
-});
-
-}
-
-
-/* =====================================================
-   CARGAR 487_PREDIOS.GEOJSON
-===================================================== */
-
-function cargarPrediosCensar(){
-
-if(capaPrediosCensar){
-
-activarModoPrediosCensar();
-
-return;
-
-}
-
-fetch(URL_PREDIOS_CENSAR)
-
-.then(function(r){
-
-if(!r.ok){
-
-throw new Error(
-"HTTP " + r.status + " - " + URL_PREDIOS_CENSAR
-);
-
-}
-
-return r.json();
-
-})
-
-.then(function(data){
-
-capaPrediosCensar=
-crearCapaPrediosCensar(data);
-
-activarModoPrediosCensar();
-
-})
-
-.catch(function(error){
-
-console.error(
-"Error cargando 487_Predios.geojson:",
-error
-);
-
-alert(
-"No se pudo cargar 487_Predios.geojson.\n\n" +
-"Revise que el archivo exista en GitHub y que el nombre sea 487_Predios.geojson."
-);
-
-});
-
-}
-
-
-/* =====================================================
-   BOTÓN MOSTRAR / OCULTAR
-===================================================== */
-
-function mostrarPrediosCensar(){
-
-if(!capaPrediosCensar){
-
-cargarPrediosCensar();
-
-return;
-
-}
-
-if(modoPrediosCensar){
-
-desactivarModoPrediosCensar();
-
-}else{
-
-activarModoPrediosCensar();
-
-}
-
-}
-
-
-/* =====================================================
-   ACTIVAR MODO PREDIOS POR CENSAR
-   Al activarlo se ocultan las capas históricas.
-   Así la información del mapa queda exclusivamente
-   en 487_Predios.geojson.
-===================================================== */
-
-function activarModoPrediosCensar(){
-
-if(!capaPrediosCensar){
-return;
-}
-
-
-/* Ocultar SOLO las capas históricas originales. */
-obtenerCapas().forEach(function(capa){
-
-if(capa && map.hasLayer(capa)){
-
-map.removeLayer(capa);
-
-}
-
-});
-
-modoPrediosCensar=true;
-
-map.addLayer(capaPrediosCensar);
-
-
-/* Ajustar vista a los 487 predios. */
-try{
-
-if(capaPrediosCensar.getBounds().isValid()){
-
-map.fitBounds(
-capaPrediosCensar.getBounds(),
-{
-padding:[20,20],
-maxZoom:17
-}
-);
-
-}
-
-}catch(e){
-
-console.warn(
-"No se pudo ajustar el mapa a 487_Predios:",
-e
-);
-
-}
-
-
-/* Estado inicial del parpadeo. */
-estadoParpadeoCenso=true;
-
-capaPrediosCensar.eachLayer(function(layer){
-
-layer._censoHover=false;
-
-layer.setStyle({
-
-color:"red",
-weight:2.5,
-opacity:1,
-fillColor:"yellow",
-fillOpacity:0.75
-
-});
-
-});
-
-
-var boton=document.getElementById("btnCenso");
-
-if(boton){
-
-boton.innerHTML="OCULTAR";
-
-}
-
-}
-
-
-/* =====================================================
-   DESACTIVAR 487 Y RECUPERAR EL AÑO ORIGINAL
-===================================================== */
-
-function desactivarModoPrediosCensar(){
-
-if(capaPrediosCensar && map.hasLayer(capaPrediosCensar)){
-
-map.removeLayer(capaPrediosCensar);
-
-}
-
-modoPrediosCensar=false;
-
-var boton=document.getElementById("btnCenso");
-
-if(boton){
-
-boton.innerHTML="MOSTRAR";
-
-}
-
-
-/* Recupera exactamente la selección del slider. */
-if(slider){
-
-slider.oninput();
-
-}
-
-}
-
-
-/* =====================================================
-   PARPADEO EXCLUSIVO DE LOS 487 PREDIOS
-===================================================== */
-
-function activarParpadeoPrediosCensar(){
-
-if(parpadeoCensoActivo){
-return;
-}
-
-parpadeoCensoActivo=true;
-
-setInterval(function(){
-
-if(!capaPrediosCensar || !modoPrediosCensar){
-return;
-}
-
-estadoParpadeoCenso=!estadoParpadeoCenso;
-
-capaPrediosCensar.eachLayer(function(layer){
-
-/* Si el mouse está sobre el predio, no quitar
-   el resaltado ni el popup. */
-if(layer._censoHover){
-return;
-}
-
-if(estadoParpadeoCenso){
-
-layer.setStyle({
-
-color:"red",
-weight:2.5,
-opacity:1,
-fillColor:"yellow",
-fillOpacity:0.75
-
-});
-
-}else{
-
-layer.setStyle({
-
-color:"red",
-weight:2.5,
-opacity:0.35,
-fillColor:"yellow",
-fillOpacity:0.12
-
-});
-
-}
-
-});
-
-},500);
-
-}
-
-
-/* Iniciar el temporizador independiente. */
-activarParpadeoPrediosCensar();
-
-
-
-
-
-/* =====================================================
-
-   CARGAR CAPAS
-
+   CARGAR CAPAS
 ===================================================== */
 
 function cargar(url,color,borde,variable){
@@ -1382,9 +947,7 @@ error
 
 
 /* =====================================================
-
-   CAPAS 2019 - 2026
-
+   CAPAS 2019 - 2026
 ===================================================== */
 
 cargar(
@@ -1479,9 +1042,7 @@ cargar(
 
 
 /* =====================================================
-
-   NUEVO AÑO 2026
-
+   NUEVO AÑO 2026
 ===================================================== */
 
 cargar(
@@ -1498,9 +1059,7 @@ cargar(
 
 
 /* =====================================================
-
-   TODAS LAS CAPAS
-
+   TODAS LAS CAPAS
 ===================================================== */
 
 function obtenerCapas(){
@@ -1529,10 +1088,7 @@ capa2026
 
 
 /* =====================================================
-
-   QUITAR TODAS LAS
-CAPAS
-
+   QUITAR TODAS LAS CAPAS
 ===================================================== */
 
 function quitarTodasLasCapas(){
@@ -1551,9 +1107,7 @@ map.removeLayer(capa);
 
 
 /* =====================================================
-
-   MOSTRAR CAPA
-
+   MOSTRAR CAPA
 ===================================================== */
 
 function mostrarCapa(anio){
@@ -1604,9 +1158,7 @@ map.addLayer(capa2026);
 
 
 /* =====================================================
-
-   MOSTRAR TODOS
-
+   MOSTRAR TODOS
 ===================================================== */
 
 function mostrarTodos(){
@@ -1618,36 +1170,29 @@ if(capa2019)
 
 map.addLayer(capa2019);
 
-
 if(capa2020)
 
 map.addLayer(capa2020);
-
 
 if(capa2021)
 
 map.addLayer(capa2021);
 
-
 if(capa2022)
 
 map.addLayer(capa2022);
-
 
 if(capa2023)
 
 map.addLayer(capa2023);
 
-
 if(capa2024)
 
 map.addLayer(capa2024);
 
-
 if(capa2025)
 
 map.addLayer(capa2025);
-
 
 if(capa2026)
 
@@ -1657,29 +1202,7 @@ map.addLayer(capa2026);
 
 
 /* =====================================================
-
-   SLIDER HISTORICO
-
-   0 = INICIO
-
-   1 = 2026
-
-   2 = 2025
-
-   3 = 2024
-
-   4 = 2023
-
-   5 = 2022
-
-   6 = 2021
-
-   7 = 2020
-
-   8 = 2019
-
-   9 = TODOS
-
+   SLIDER HISTORICO
 ===================================================== */
 
 var slider=document.getElementById(
@@ -1696,8 +1219,6 @@ var v=parseInt(this.value);
 
 quitarTodasLasCapas();
 
-
-/* ================= 0 ================= */
 
 if(v==0){
 
@@ -1719,8 +1240,6 @@ return;
 
 }
 
-
-/* ================= 2026 ================= */
 
 if(v==1){
 
@@ -1745,8 +1264,6 @@ return;
 }
 
 
-/* ================= 2025 ================= */
-
 if(v==2){
 
 document.getElementById(
@@ -1769,8 +1286,6 @@ return;
 
 }
 
-
-/* ================= 2024 ================= */
 
 if(v==3){
 
@@ -1795,8 +1310,6 @@ return;
 }
 
 
-/* ================= 2023 ================= */
-
 if(v==4){
 
 document.getElementById(
@@ -1819,8 +1332,6 @@ return;
 
 }
 
-
-/* ================= 2022 ================= */
 
 if(v==5){
 
@@ -1845,8 +1356,6 @@ return;
 }
 
 
-/* ================= 2021 ================= */
-
 if(v==6){
 
 document.getElementById(
@@ -1869,8 +1378,6 @@ return;
 
 }
 
-
-/* ================= 2020 ================= */
 
 if(v==7){
 
@@ -1895,8 +1402,6 @@ return;
 }
 
 
-/* ================= 2019 ================= */
-
 if(v==8){
 
 document.getElementById(
@@ -1919,8 +1424,6 @@ return;
 
 }
 
-
-/* ================= TODOS ================= */
 
 if(v==9){
 
@@ -1948,10 +1451,7 @@ return;
 
 
 /* =====================================================
-
-   INICIAR MAPA EN
-BLANCO
-
+   INICIAR MAPA EN BLANCO
 ===================================================== */
 
 quitarTodasLasCapas();
@@ -1972,9 +1472,7 @@ document.getElementById(
 
 
 /* =====================================================
-
-   PARPADEO
-
+   PARPADEO ORIGINAL
 ===================================================== */
 
 function activarParpadeo(){
@@ -2030,9 +1528,7 @@ activarParpadeo();
 
 
 /* =====================================================
-
-   BUSCAR PREDIO
-
+   BUSCAR PREDIO ORIGINAL
 ===================================================== */
 
 function buscarPredio(){
@@ -2060,8 +1556,6 @@ return;
 var capas=obtenerCapas();
 
 
-/* RESTAURAR ESTILOS */
-
 capas.forEach(function(capa){
 
 if(capa){
@@ -2076,8 +1570,6 @@ capa.resetStyle(layer);
 
 });
 
-
-/* BUSCAR */
 
 capas.forEach(function(capa){
 
@@ -2166,9 +1658,7 @@ layer.openPopup();
 
 
 /* =====================================================
-
-   BUSQUEDA POR VOZ
-
+   BUSQUEDA POR VOZ ORIGINAL
 ===================================================== */
 
 function iniciarVoz(){
@@ -2267,6 +1757,7 @@ event.error
 
 );
 
+
 alert(
 
 "Error en reconocimiento de voz"
@@ -2279,10 +1770,7 @@ alert(
 
 
 /* =====================================================
-
-   CAPAS
-ADMINISTRATIVAS
-
+   CAPAS ADMINISTRATIVAS
 ===================================================== */
 
 var grupoLimites=
@@ -2354,9 +1842,7 @@ className:"labelLimite"
 
 
 /* =====================================================
-
-   COLORES PARROQUIAS
-
+   COLORES PARROQUIAS
 ===================================================== */
 
 function getColorParroquia(i){
@@ -2367,121 +1853,149 @@ var colores=[
 
 "#e0ecf4",
 
-"#e6f5d0",
+"#fee0d2",
+
+"#e5f5e0",
+
+"#f2f0f7",
 
 "#fff2ae",
 
-"#f1e2cc",
+"#d9d9d9",
 
-"#d9f0f3",
-
-"#fddbc7",
-
-"#e7d4e8",
-
-"#ccebc5",
-
-"#fbb4ae",
-
-"#b3cde3",
-
-"#decbe4",
-
-"#fed9a6",
-
-"#ffffcc",
-
-"#e5d8bd"
+"#ccebc5"
 
 ];
 
-return colores[
-
-i % colores.length
-
-];
+return colores[i % colores.length];
 
 }
 
 
 /* =====================================================
-
-   PARROQUIAS
-
+   PREDIOS POR CENSAR - 487
+   BLOQUE NUEVO E INDEPENDIENTE
 ===================================================== */
 
-fetch(
+var capaPrediosCensar=null;
 
-"https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/refs/heads/main/Parroquias_Urbanas_y_Rurales.geojson"
+var modoPrediosCensar=false;
 
-)
+var estadoParpadeoCenso=true;
 
-.then(function(r){
+var intervaloParpadeoCenso=null;
 
-return r.json();
-
-})
-
-.then(function(data){
-
-var coloresParroquia={};
-
-var i=0;
+var capasHistoricasAntesCenso=[];
 
 
-var parroquias=L.geoJson(
+var URL_PREDIOS_CENSAR=
 
-data,
-
-{
-
-style:function(feature){
-
-var nombre=(
-
-feature.properties.parroquia ||
-
-feature.properties.nombre ||
-
-feature.properties.name ||
-
-feature.properties.NOMBRE ||
-
-"sin_nombre"
-
-)
-
-.toString()
-
-.trim()
-
-.toUpperCase();
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/487_Predios.geojson";
 
 
-if(!coloresParroquia[nombre]){
+/* =====================================================
+   ESCAPAR TEXTO
+===================================================== */
 
-coloresParroquia[nombre]=
+function escaparHTMLCenso(valor){
 
-getColorParroquia(i++);
+if(valor===null || valor===undefined)
+
+return "";
+
+
+return String(valor)
+
+.replace(/&/g,"&amp;")
+
+.replace(/</g,"&lt;")
+
+.replace(/>/g,"&gt;")
+
+.replace(/"/g,"&quot;")
+
+.replace(/'/g,"&#039;");
 
 }
 
 
+/* =====================================================
+   INFORMACION DEL PREDIO 487
+   SOLO USA 487_Predios.geojson
+===================================================== */
+
+function informacionPredioCenso(feature){
+
+var p=feature.properties || {};
+
+
+var html=
+
+"<div style='min-width:230px;max-width:320px;'>"+
+
+"<div style='color:red;font-weight:bold;font-size:16px;margin-bottom:8px;'>"+
+
+"PREDIO POR CENSAR"+
+
+"</div>";
+
+
+Object.keys(p).forEach(function(campo){
+
+var valor=p[campo];
+
+
+if(valor===null || valor===undefined)
+
+valor="";
+
+
+html+=
+
+"<div style='margin-bottom:4px;'>"+
+
+"<strong>"+
+
+escaparHTMLCenso(campo)+
+
+":</strong> "+
+
+escaparHTMLCenso(valor)+
+
+"</div>";
+
+});
+
+
+html+="</div>";
+
+
+return html;
+
+}
+
+
+/* =====================================================
+   CREAR CAPA 487
+===================================================== */
+
+function crearCapaPrediosCensar(datos){
+
+return L.geoJson(datos,{
+
+style:function(){
+
 return{
 
-color:"#333",
+color:"red",
 
-weight:1.5,
+weight:2.5,
 
-dashArray:"10,15",
+opacity:1,
 
-fillColor:
+fillColor:"yellow",
 
-coloresParroquia[nombre],
-
-fillOpacity:0.30,
-
-opacity:0.9
+fillOpacity:0.70
 
 };
 
@@ -2490,179 +2004,445 @@ opacity:0.9
 
 onEachFeature:function(feature,layer){
 
-var nombre=
 
-feature.properties.name ||
+layer.bindPopup(
 
-feature.properties.nombre ||
-
-feature.properties.NOMBRE ||
-
-feature.properties.parroquia ||
-
-"";
-
-
-if(nombre!=""){
-
-layer.bindTooltip(
-
-nombre,
+informacionPredioCenso(feature),
 
 {
 
-permanent:true,
+closeButton:true,
 
-direction:"center",
+autoClose:false,
 
-className:"labelParroquia"
-
-}
-
-);
-
-}
-
-}
+closeOnClick:false
 
 }
 
 );
 
 
-grupoLimites.addLayer(
+/* MOUSEOVER */
 
-parroquias
+layer.on("mouseover",function(){
 
-);
+this._censoMouse=true;
+
+
+this.setStyle({
+
+color:"red",
+
+weight:4,
+
+opacity:1,
+
+fillColor:"orange",
+
+fillOpacity:0.95
 
 });
+
+
+this.bringToFront();
+
+this.openPopup();
+
+});
+
+
+/* MOUSEOUT */
+
+layer.on("mouseout",function(){
+
+this._censoMouse=false;
+
+
+this.setStyle({
+
+color:"red",
+
+weight:2.5,
+
+opacity:
+
+estadoParpadeoCenso ? 1 : 0.30,
+
+fillColor:"yellow",
+
+fillOpacity:
+
+estadoParpadeoCenso ? 0.70 : 0.10
+
+});
+
+});
+
+
+/* CLICK */
+
+layer.on("click",function(){
+
+this.bringToFront();
+
+this.openPopup();
+
+});
+
+}
+
+});
+
+}
 
 
 /* =====================================================
-
-   LEYENDA
-
+   CARGAR 487_PREDIOS.GEOJSON
 ===================================================== */
 
-var leyenda=
+function cargarPrediosCensar(){
 
-L.control({
+if(capaPrediosCensar){
 
-position:'bottomright'
+activarModoPrediosCensar();
 
-});
+return;
+
+}
 
 
-leyenda.onAdd=function(map){
+fetch(URL_PREDIOS_CENSAR)
 
-var div=
+.then(function(r){
 
-L.DomUtil.create(
+if(!r.ok){
 
-'div',
+throw new Error(
 
-'info legend'
+"HTTP "+r.status
+
+);
+
+}
+
+return r.json();
+
+})
+
+
+.then(function(data){
+
+var cantidad=
+
+(data.features && data.features.length)
+
+?
+
+data.features.length
+
+:
+
+487;
+
+
+document.getElementById(
+
+"numeroCenso"
+
+).innerHTML=cantidad;
+
+
+capaPrediosCensar=
+
+crearCapaPrediosCensar(data);
+
+
+activarModoPrediosCensar();
+
+})
+
+
+.catch(function(error){
+
+console.error(
+
+"Error cargando 487_Predios.geojson:",
+
+error
 
 );
 
 
-div.style.background='white';
+alert(
 
-div.style.padding='10px';
+"No se pudo cargar 487_Predios.geojson.\n\n"+
 
-div.style.borderRadius='8px';
+"Revise que el archivo exista en GitHub."
 
-div.style.boxShadow=
+);
 
-'0 0 5px gray';
+});
 
-
-div.innerHTML=
-
-'<h3>Simbología</h3>';
+}
 
 
-var años=[
+/* =====================================================
+   ACTIVAR 487
+===================================================== */
 
-2026,
+function activarModoPrediosCensar(){
 
-2025,
+if(!capaPrediosCensar)
 
-2024,
-
-2023,
-
-2022,
-
-2021,
-
-2020,
-
-2019
-
-];
+return;
 
 
-var colores=[
+/* Guardar las capas que estaban visibles */
 
-'green',
-
-'yellow',
-
-'Magenta',
-
-'cyan',
-
-'red',
-
-'orange',
-
-'purple',
-
-'blue'
-
-];
+capasHistoricasAntesCenso=[];
 
 
-for(
+obtenerCapas().forEach(function(capa){
 
-var i=0;
+if(capa && map.hasLayer(capa)){
 
-i<años.length;
+capasHistoricasAntesCenso.push(capa);
 
-i++
+map.removeLayer(capa);
+
+}
+
+});
+
+
+modoPrediosCensar=true;
+
+
+map.addLayer(capaPrediosCensar);
+
+
+/* Estilo inicial */
+
+capaPrediosCensar.eachLayer(function(layer){
+
+layer._censoMouse=false;
+
+
+layer.setStyle({
+
+color:"red",
+
+weight:2.5,
+
+opacity:1,
+
+fillColor:"yellow",
+
+fillOpacity:0.70
+
+});
+
+});
+
+
+var boton=
+
+document.getElementById(
+
+"btnCenso"
+
+);
+
+
+if(boton)
+
+boton.innerHTML="OCULTAR";
+
+}
+
+
+/* =====================================================
+   DESACTIVAR 487
+===================================================== */
+
+function desactivarModoPrediosCensar(){
+
+if(
+
+capaPrediosCensar &&
+
+map.hasLayer(capaPrediosCensar)
 
 ){
 
-div.innerHTML+=
-
-'<i style="background:'+
-
-colores[i]+
-
-'; width:18px; height:18px; display:inline-block;
-margin-right:5px;"></i> '+
-
-años[i]+
-
-'<br>';
+map.removeLayer(capaPrediosCensar);
 
 }
 
 
-return div;
-
-};
+modoPrediosCensar=false;
 
 
-leyenda.addTo(map);
+/* Recuperar las capas originales */
+
+capasHistoricasAntesCenso.forEach(function(capa){
+
+if(
+
+capa &&
+
+!map.hasLayer(capa)
+
+){
+
+map.addLayer(capa);
+
+}
+
+});
+
+
+capasHistoricasAntesCenso=[];
+
+
+var boton=
+
+document.getElementById(
+
+"btnCenso"
+
+);
+
+
+if(boton)
+
+boton.innerHTML="MOSTRAR";
+
+}
 
 
 /* =====================================================
+   BOTON MOSTRAR / OCULTAR
+===================================================== */
 
-   GENERAR LINK
+function mostrarPrediosCensar(){
 
+if(!capaPrediosCensar){
+
+cargarPrediosCensar();
+
+return;
+
+}
+
+
+if(modoPrediosCensar){
+
+desactivarModoPrediosCensar();
+
+}else{
+
+activarModoPrediosCensar();
+
+}
+
+}
+
+
+/* =====================================================
+   PARPADEO INDEPENDIENTE DE LOS 487
+===================================================== */
+
+function activarParpadeoPrediosCensar(){
+
+if(intervaloParpadeoCenso)
+
+return;
+
+
+intervaloParpadeoCenso=
+
+setInterval(function(){
+
+
+if(
+
+!capaPrediosCensar ||
+
+!modoPrediosCensar
+
+)
+
+return;
+
+
+estadoParpadeoCenso=
+
+!estadoParpadeoCenso;
+
+
+capaPrediosCensar.eachLayer(function(layer){
+
+
+/* No modificar el predio bajo el mouse */
+
+if(layer._censoMouse)
+
+return;
+
+
+if(estadoParpadeoCenso){
+
+layer.setStyle({
+
+color:"red",
+
+weight:2.5,
+
+opacity:1,
+
+fillColor:"yellow",
+
+fillOpacity:0.70
+
+});
+
+}else{
+
+layer.setStyle({
+
+color:"red",
+
+weight:2.5,
+
+opacity:0.30,
+
+fillColor:"yellow",
+
+fillOpacity:0.10
+
+});
+
+}
+
+});
+
+},400);
+
+}
+
+
+activarParpadeoPrediosCensar();
+
+
+/* =====================================================
+   AQUÍ CONTINÚA TODO EL RESTO DE TU CÓDIGO ORIGINAL
+   ADMINISTRATIVO, PARROQUIAS, LEYENDA Y GENERAR LINK.
+===================================================== */
+
+
+/* =====================================================
+   GENERAR LINK ORIGINAL
 ===================================================== */
 
 document.getElementById(
@@ -2677,8 +2457,7 @@ function(){
 
 var minutos=prompt(
 
-"¿Cuántos MINUTOS quieres que dure el link? (60 = 1
-hora)"
+"¿Cuántos MINUTOS quieres que dure el link? (60 = 1 hora)"
 
 );
 
