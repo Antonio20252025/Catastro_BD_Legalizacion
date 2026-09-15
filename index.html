@@ -1,2251 +1,2767 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+
+<head>
 
 <title>Mapa Catastro por Años</title>
 
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet"
-href="https://unpkg.com/leaflet.fullscreen@3.0.0/Control.FullScreen.css">
+
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<script
+
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+
+</script>
+
+<link rel="stylesheet"
+
+href="https://unpkg.com/leaflet.fullscreen@latest/Control.FullScreen.css"/>
+
+<script
+
+src="https://unpkg.com/leaflet.fullscreen@latest/Control.FullScreen.js">
+
+</script>
+
 
 <style>
 
-html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-    font-family:Arial, sans-serif;
-    background:#d2e2f7;
+body{
+
+background:#d2e2f7;
+
+margin:10px;
+
+font-family:Arial;
+
 }
 
-/* =========================
-   ENCABEZADO
-========================= */
+.logo-manta{
 
-#encabezado{
-    width:100%;
-    background:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    min-height:90px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.25);
-    z-index:2000;
+position:absolute;
+
+left:20px;
+
+top:5px;
+
+width:120px;
+
+z-index:1000;
+
 }
 
-#encabezado .logo-manta{
-    position:absolute;
-    left:15px;
-    top:8px;
-    width:100px;
-    max-height:75px;
-    object-fit:contain;
-}
+.titulo{
 
-#titulo{
-    text-align:center;
-    line-height:1.25;
-    padding:10px 120px;
-}
+text-align:center;
 
-#titulo .municipio{
-    font-size:20px;
-    font-weight:bold;
-}
+line-height:0.5;
 
-#titulo .unidad{
-    font-size:16px;
-    font-weight:bold;
-    margin-top:5px;
 }
-
-/* =========================
-   MAPA
-========================= */
 
 #mapa{
-    width:100%;
-    height:75vh;
-    position:relative;
+
+width:100%;
+
+height:75vh;
+
+border:2px solid #004bad;
+
 }
-
-.leaflet-container{
-    font-family:Arial,sans-serif;
-}
-
-/* =========================
-   BUSCADOR
-========================= */
-
-#buscadorPredio{
-    position:absolute;
-    bottom:15px;
-    right:15px;
-    z-index:1000;
-    background:white;
-    padding:8px;
-    border-radius:8px;
-    box-shadow:0 0 6px rgba(0,0,0,0.35);
-    display:flex;
-    gap:5px;
-    align-items:center;
-}
-
-#inputBusqueda{
-    width:220px;
-    padding:8px;
-    border:1px solid #aaa;
-    border-radius:5px;
-    font-size:14px;
-}
-
-#btnBuscar,
-#btnVoz{
-    border:none;
-    border-radius:5px;
-    padding:8px 10px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-#btnBuscar{
-    background:#1976d2;
-    color:white;
-}
-
-#btnVoz{
-    background:#555;
-    color:white;
-}
-
-/* =========================
-   CONTROL HISTÓRICO
-========================= */
 
 #controlTiempo{
-    position:absolute;
-    bottom:15px;
-    left:15px;
-    z-index:1000;
-    background:white;
-    padding:10px 15px;
-    border:2px solid #1976d2;
-    border-radius:8px;
-    box-shadow:0 0 5px rgba(0,0,0,0.35);
-    text-align:center;
-    min-width:230px;
+
+position:absolute;
+
+bottom:15px;
+
+left:20px;
+
+background:white;
+
+padding:10px;
+
+border-radius:8px;
+
+box-shadow:0 0 5px gray;
+
+z-index:1000;
+
+font-weight:bold;
+
+max-width:260px;
+
 }
 
-.tituloTiempo{
-    font-size:14px;
-    font-weight:bold;
-    color:#1976d2;
+#controlTiempo input{
+
+width:100%;
+
 }
 
-#valorAnio{
-    font-size:25px;
-    font-weight:bold;
-    margin:4px 0;
-    color:#222;
+#buscadorPredio{
+
+position:absolute;
+
+bottom:5px;
+
+right:110px;
+
+background:white;
+
+padding:10px;
+
+border-radius:8px;
+
+box-shadow:0 0 5px gray;
+
+z-index:1000;
+
+font-weight:bold;
+
+max-width:260px;
+
 }
 
-#sliderAnios{
-    width:100%;
-    cursor:pointer;
+#buscadorPredio input{
+
+width:100%;
+
+margin-top:5px;
+
 }
 
-/* =========================
-   PREDIOS POR CENSAR
-========================= */
+#buscadorPredio button{
 
-#cuadroPrediosCensar{
-    position:absolute;
-    bottom:15px;
-    left:285px;
-    z-index:1000;
-    background:white;
-    padding:10px 15px;
-    border:2px solid red;
-    border-radius:8px;
-    box-shadow:0 0 5px rgba(0,0,0,0.35);
-    text-align:center;
-    font-weight:bold;
-    min-width:180px;
+margin-top:5px;
+
+width:100%;
+
 }
 
-.tituloCensar{
-    color:red;
-    font-size:14px;
+/* =====================================================
+   NUEVO CUADRO: PREDIOS POR CENSAR
+   Se agrega sin modificar el cuadro histórico.
+===================================================== */
+
+#controlCenso{
+position:absolute;
+bottom:15px;
+left:300px;
+width:265px;
+box-sizing:border-box;
+background:white;
+border:2px solid red;
+border-radius:10px;
+padding:10px;
+z-index:1200;
+font-family:Arial;
+font-weight:bold;
+text-align:center;
+box-shadow:0 0 5px gray;
 }
 
-.numeroCensar{
-    color:#d35400;
-    font-size:25px;
-    margin-top:3px;
-    margin-bottom:5px;
+#controlCenso .tituloCenso{
+color:red;
+font-size:17px;
+font-weight:bold;
+line-height:1.1;
 }
 
-#btnPrediosCensar{
-    border:none;
-    background:red;
-    color:white;
-    padding:7px 18px;
-    border-radius:5px;
-    cursor:pointer;
-    font-weight:bold;
+#controlCenso .numeroCenso{
+color:#cc5500;
+font-size:31px;
+font-weight:bold;
+margin:8px 0;
 }
 
-#btnPrediosCensar:hover{
-    background:#b00000;
+#controlCenso button{
+width:130px;
+height:40px;
+border:none;
+border-radius:7px;
+background:red;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
 }
 
-/* =========================
-   LEYENDA
-========================= */
-
-#leyenda{
-    position:absolute;
-    bottom:15px;
-    right:15px;
-    z-index:1000;
-    background:white;
-    padding:10px;
-    border-radius:8px;
-    box-shadow:0 0 5px rgba(0,0,0,0.35);
-    font-size:12px;
+#controlCenso button:hover{
+background:#cc0000;
 }
-
-.leyendaTitulo{
-    font-weight:bold;
-    margin-bottom:5px;
-}
-
-.leyendaItem{
-    display:flex;
-    align-items:center;
-    margin:3px 0;
-}
-
-.leyendaColor{
-    width:25px;
-    height:12px;
-    margin-right:6px;
-    border:2px solid;
-}
-
-/* =========================
-   BOTÓN ADMIN
-========================= */
-
-#btnAdmin{
-    position:absolute;
-    top:10px;
-    right:10px;
-    z-index:1000;
-    background:#333;
-    color:white;
-    border:none;
-    padding:8px 12px;
-    border-radius:5px;
-    cursor:pointer;
-}
-
-/* =========================
-   POPUP
-========================= */
-
-.popupCampos{
-    max-height:400px;
-    overflow-y:auto;
-}
-
-.popupTabla{
-    border-collapse:collapse;
-    width:100%;
-    font-size:13px;
-}
-
-.popupTabla td{
-    border-bottom:1px solid #ddd;
-    padding:4px;
-    vertical-align:top;
-}
-
-.popupTabla td:first-child{
-    font-weight:bold;
-    background:#f2f2f2;
-    width:40%;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media(max-width:768px){
 
-    #encabezado{
-        min-height:75px;
-    }
+#controlCenso{
+left:10px;
+bottom:180px;
+width:180px;
+padding:8px;
+}
 
-    #encabezado .logo-manta{
-        width:90px;
-        max-height:60px;
-        left:5px;
-    }
+#controlCenso .tituloCenso{
+font-size:12px;
+}
 
-    #titulo{
-        padding:8px 90px;
-    }
+#controlCenso .numeroCenso{
+font-size:24px;
+margin:6px 0;
+}
 
-    #titulo .municipio{
-        font-size:14px;
-    }
-
-    #titulo .unidad{
-        font-size:11px;
-    }
-
-    #mapa{
-        height:65vh;
-    }
-
-    #controlTiempo{
-        left:10px;
-        bottom:10px;
-        min-width:170px;
-        padding:7px;
-    }
-
-    #cuadroPrediosCensar{
-        left:200px;
-        bottom:10px;
-        min-width:140px;
-        padding:7px;
-    }
-
-    .tituloCensar,
-    .tituloTiempo{
-        font-size:11px;
-    }
-
-    #valorAnio,
-    .numeroCensar{
-        font-size:20px;
-    }
-
-    #buscadorPredio{
-        bottom:80px;
-        right:5px;
-        left:5px;
-        justify-content:center;
-    }
-
-    #inputBusqueda{
-        width:150px;
-    }
-
-    #leyenda{
-        display:none;
-    }
+#controlCenso button{
+width:120px;
+height:36px;
+font-size:13px;
+}
 
 }
 
-/* =========================
-   CONTROL DE PARPADEO
-========================= */
+.legend{
 
-.parpadeo{
-    transition:opacity 0.15s ease;
+font-size:10px;
+
+}
+
+.labelParroquia{
+
+background:transparent !important;
+
+border:none !important;
+
+box-shadow:none !important;
+
+color:blue;
+
+font-size:10px;
+
+}
+
+@media(max-width:768px){
+
+.logo-manta{
+
+width:90px;
+
+left:10px;
+
+}
+
+h4{
+
+font-size:12px;
+
+}
+
+#mapa{
+
+height:65vh;
+
+}
+
+#controlTiempo{
+
+left:10px;
+
+bottom:10px;
+
+font-size:12px;
+
+padding:8px;
+
+max-width:180px;
+
+}
+
+#buscadorPredio{
+
+right:10px;
+
+bottom:10px;
+
+font-size:12px;
+
+padding:8px;
+
+max-width:180px;
+
+}
+
 }
 
 </style>
 
 </head>
 
+
 <body>
 
-<!-- =========================
-     ENCABEZADO
-========================= -->
 
-<div id="encabezado">
+<div class="titulo">
 
-    <img src="imagenmanta.png"
-         class="logo-manta"
-         alt="Manta">
+<h4>
 
-    <div id="titulo">
+GOBIERNO AUTÓNOMO DESCENTRALIZADO DEL CANTÓN MANTA
 
-        <div class="municipio">
-            GOBIERNO AUTÓNOMO DESCENTRALIZADO DEL CANTÓN MANTA
-        </div>
+</h4>
 
-        <div class="unidad">
-            UNIDAD DE GESTIÓN Y TITULARIZACIÓN DE TIERRAS
-        </div>
+<h4>
 
-    </div>
+UNIDAD DE GESTIÓN Y TITULARIZACIÓN DE TIERRAS
+
+</h4>
+
+<img src="imagenmanta.png" class="logo-manta">
 
 </div>
 
 
-<!-- =========================
-     MAPA
-========================= -->
-
-<div id="mapa">
-
-    <button id="btnAdmin">
-        GENERAR LINK
-    </button>
+<div id="mapa"></div>
 
 
-    <!-- CONTROL HISTÓRICO -->
+<button id="btnAdmin" style="
 
-    <div id="controlTiempo">
+display:none;
 
-        <div class="tituloTiempo">
-            HISTÓRICO DE AÑOS
-        </div>
+position:fixed;
 
-        <div id="valorAnio">
-            Mover barra para iniciar
-        </div>
+top:10px;
 
-        <input
-            type="range"
-            id="sliderAnios"
-            min="0"
-            max="9"
-            step="1"
-            value="0"
-        >
+right:10px;
 
-    </div>
+z-index:2000;
 
+padding:8px;
 
-    <!-- PREDIOS POR CENSAR -->
+background:#004bad;
 
-    <div id="cuadroPrediosCensar">
+color:white;
 
-        <div class="tituloCensar">
-            PREDIOS POR CENSAR
-        </div>
+border:none;
 
-        <div
-            id="cantidadPrediosCensar"
-            class="numeroCensar">
-            Cargando...
-        </div>
+border-radius:5px;
 
-        <button
-            id="btnPrediosCensar"
-            onclick="mostrarPrediosCensar()">
-            MOSTRAR
-        </button>
+cursor:pointer;
 
-    </div>
+">
+
+Generar Link
+
+</button>
 
 
-    <!-- BUSCADOR -->
+<!-- ================= CONTROL HISTORICO
+================= -->
 
-    <div id="buscadorPredio">
+<div id="controlTiempo">
 
-        <input
-            type="text"
-            id="inputBusqueda"
-            placeholder="Clave, propietario o cédula">
+Año:
 
-        <button id="btnBuscar">
-            BUSCAR
-        </button>
+<span id="valorAnio"></span>
 
-        <button id="btnVoz">
-            🎤
-        </button>
+<br>
 
-    </div>
+<input
 
+type="range"
 
-    <!-- LEYENDA -->
+min="0"
 
-    <div id="leyenda">
+max="9"
 
-        <div class="leyendaTitulo">
-            AÑOS
-        </div>
+value="0"
 
-        <div class="leyendaItem">
-            <span class="leyendaColor"
-                  style="border-color:blue;">
-            </span>
-            2019
-        </div>
+step="1"
 
-        <div class="leyendaItem">
-            <span class="leyendaColor"
-                  style="border-color:purple;">
-            </span>
-            2020
-        </div>
+id="sliderTiempo"
 
-        <div class="leyendaItem">
-            <span class="leyendaColor"
-                  style="border-color:orange;">
-            </span>
-            2021
-        </div>
+> 
 
-        <div class="leyendaItem">
-            <span class="leyendaColor"
-                  style="border-color:red;">
-            </span>
-            2022
-        </div>
+<br>
 
-        <div class="leyendaItem">
-            <span class="leyendaColor"
-                  style="border-color:cyan;">
-            </span>
-            2023
-        </div>
+<span id="conteoPredios">
 
-        <div class="leyendaItem">
-            <span class="leyendaColor"
-                  style="border-color:magenta;">
-            </span>
-            2024
-        </div>
+Mover barra para iniciar
 
-        <div class="leyendaItem">
-            <span class="leyendaColor"
-                  style="border-color:yellow;">
-            </span>
-            2025
-        </div>
-
-        <div class="leyendaItem">
-            <span class="leyendaColor"
-                  style="border-color:#00aa00;">
-            </span>
-            2026
-        </div>
-
-    </div>
+</span>
 
 </div>
 
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- =====================================================
+     NUEVO CUADRO: PREDIOS POR CENSAR
+===================================================== -->
 
-<script src="https://unpkg.com/leaflet.fullscreen@3.0.0/Control.FullScreen.js"></script>
+<div id="controlCenso">
+
+<div class="tituloCenso">
+PREDIOS POR CENSAR
+</div>
+
+<div class="numeroCenso" id="numeroCenso">
+487
+</div>
+
+<button id="btnCenso" onclick="mostrarPrediosCensar()">
+MOSTRAR
+</button>
+
+</div>
+
+
+<!-- ================= BUSCADOR ================= -->
+
+<div id="buscadorPredio">
+
+Buscar Predio
+
+<br>
+
+<input
+
+type="text"
+
+id="textoBuscar"
+
+placeholder="Clave, propietario o cédula"
+
+> 
+
+<button onclick="buscarPredio()">
+
+Buscar
+
+</button>
+
+<button onclick="iniciarVoz()">
+
+🎤 Hablar
+
+</button>
+
+</div>
 
 
 <script>
 
-/* =====================================================
-   MAPA
-===================================================== */
-
-var map = L.map("mapa", {
-    fullscreenControl:true
-}).setView(
-    [-0.999491,-80.761089],
-    14
-);
-
 
 /* =====================================================
-   MAPAS BASE
+
+   MODO ADMINISTRADOR
+
 ===================================================== */
 
-var osm = L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-        maxZoom:25,
-        attribution:"© OpenStreetMap"
-    }
-);
+window.addEventListener("load",function(){
 
-var google = L.tileLayer(
-    "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
-    {
-        maxZoom:25
-    }
-);
+var params=new URLSearchParams(window.location.search);
 
-var googleHybrid = L.tileLayer(
-    "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
-    {
-        maxZoom:25,
-        opacity:0.6
-    }
-);
+var token=params.get("token");
 
-googleHybrid.addTo(map);
+var fechaExp=params.get("exp");
+
+var adminModo=params.get("admin");
+
+var TOKEN_VALIDO="ABC123";
+
+var btn=document.getElementById("btnAdmin");
 
 
-L.control.layers(
-    {
-        "OpenStreetMap":osm,
-        "Google":google,
-        "Google Híbrido":googleHybrid
-    }
-).addTo(map);
+if(adminModo==="1"){
 
+if(btn){
 
-/* =====================================================
-   VARIABLES DE CAPAS
-===================================================== */
+btn.style.display="block";
 
-var capa2019 = null;
-var capa2020 = null;
-var capa2021 = null;
-var capa2022 = null;
-var capa2023 = null;
-var capa2024 = null;
-var capa2025 = null;
-var capa2026 = null;
-
-
-/* =====================================================
-   PREDIOS POR CENSAR
-===================================================== */
-
-var capaPrediosCensar = null;
-
-var prediosCensarMostrados = false;
-
-var estadoParpadeoCensar = true;
-
-
-/* =====================================================
-   LISTA DE CAPAS DE AÑOS
-===================================================== */
-
-var capasAnios = [
-    {
-        anio:2019,
-        variable:"capa2019",
-        color:"yellow",
-        borde:"blue"
-    },
-    {
-        anio:2020,
-        variable:"capa2020",
-        color:"violet",
-        borde:"purple"
-    },
-    {
-        anio:2021,
-        variable:"capa2021",
-        color:"blue",
-        borde:"orange"
-    },
-    {
-        anio:2022,
-        variable:"capa2022",
-        color:"pink",
-        borde:"red"
-    },
-    {
-        anio:2023,
-        variable:"capa2023",
-        color:"darkblue",
-        borde:"cyan"
-    },
-    {
-        anio:2024,
-        variable:"capa2024",
-        color:"sandybrown",
-        borde:"magenta"
-    },
-    {
-        anio:2025,
-        variable:"capa2025",
-        color:"white",
-        borde:"yellow"
-    },
-    {
-        anio:2026,
-        variable:"capa2026",
-        color:"lightgreen",
-        borde:"#00aa00"
-    }
-];
-
-
-/* =====================================================
-   ESCAPAR HTML
-===================================================== */
-
-function escaparHTML(valor){
-
-    if(valor === null ||
-       valor === undefined){
-
-        return "";
-    }
-
-    return String(valor)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
 }
 
-
-/* =====================================================
-   POPUP DE TODOS LOS CAMPOS
-===================================================== */
-
-function crearPopupTodosLosCampos(properties){
-
-    var html =
-        '<div class="popupCampos">' +
-        '<table class="popupTabla">';
-
-    Object.keys(properties).forEach(function(campo){
-
-        var valor = properties[campo];
-
-        if(valor === null ||
-           valor === undefined ||
-           valor === ""){
-
-            valor = "";
-        }
-
-        html +=
-            "<tr>" +
-            "<td>" +
-            escaparHTML(campo) +
-            "</td>" +
-            "<td>" +
-            escaparHTML(valor) +
-            "</td>" +
-            "</tr>";
-
-    });
-
-    html +=
-        "</table>" +
-        "</div>";
-
-    return html;
-}
-
-
-/* =====================================================
-   POPUP NORMAL DE PREDIOS
-===================================================== */
-
-function crearPopupPredio(properties){
-
-    var campos = [
-        "clavecatas",
-        "zona",
-        "sector",
-        "manzana",
-        "lote",
-        "propietari",
-        "documentop",
-        "direccion",
-        "area_m2",
-        "zonaurbano",
-        "parroquia",
-        "barrio",
-        "RESOLUCION",
-        "N_Ficha",
-        "observacio"
-    ];
-
-    var html =
-        '<div class="popupCampos">' +
-        '<table class="popupTabla">';
-
-    campos.forEach(function(campo){
-
-        if(
-            Object.prototype.hasOwnProperty.call(
-                properties,
-                campo
-            )
-        ){
-
-            var valor = properties[campo];
-
-            if(valor === null ||
-               valor === undefined){
-
-                valor = "";
-            }
-
-            html +=
-                "<tr>" +
-                "<td>" +
-                escaparHTML(campo) +
-                "</td>" +
-                "<td>" +
-                escaparHTML(valor) +
-                "</td>" +
-                "</tr>";
-        }
-
-    });
-
-
-    /*
-       Mostrar también cualquier campo adicional
-       que exista en el GeoJSON.
-    */
-
-    Object.keys(properties).forEach(function(campo){
-
-        if(campos.indexOf(campo) === -1){
-
-            var valor = properties[campo];
-
-            if(valor === null ||
-               valor === undefined){
-
-                valor = "";
-            }
-
-            html +=
-                "<tr>" +
-                "<td>" +
-                escaparHTML(campo) +
-                "</td>" +
-                "<td>" +
-                escaparHTML(valor) +
-                "</td>" +
-                "</tr>";
-        }
-
-    });
-
-    html +=
-        "</table>" +
-        "</div>";
-
-    return html;
-}
-
-
-/* =====================================================
-   CREAR CAPA DE AÑO
-===================================================== */
-
-function crearCapa(datos, relleno, contorno){
-
-    return L.geoJSON(datos, {
-
-        style:function(){
-
-            return {
-                color:contorno,
-                weight:2,
-                fillColor:relleno,
-                fillOpacity:0.6,
-                opacity:1
-            };
-
-        },
-
-        onEachFeature:function(feature,layer){
-
-            var p = feature.properties || {};
-
-            layer.bindPopup(
-                crearPopupPredio(p)
-            );
-
-            layer.on({
-
-                mouseover:function(e){
-
-                    e.target.setStyle({
-
-                        weight:4,
-                        color:"red",
-                        fillOpacity:0.75
-
-                    });
-
-                    e.target.openPopup();
-
-                },
-
-                mouseout:function(e){
-
-                    e.target.setStyle({
-
-                        weight:2,
-                        color:contorno,
-                        fillColor:relleno,
-                        fillOpacity:0.6,
-                        opacity:1
-
-                    });
-
-                }
-
-            });
-
-        }
-
-    });
+return;
 
 }
 
 
-/* =====================================================
-   CARGAR CAPA
-===================================================== */
+if(token){
 
-function cargar(
-    url,
-    color,
-    borde,
-    variable
-){
+if(token!==TOKEN_VALIDO){
 
-    fetch(url)
+document.body.innerHTML="🔒 Token inválido";
 
-    .then(function(r){
-
-        if(!r.ok){
-
-            throw new Error(
-                "Error cargando " + url
-            );
-
-        }
-
-        return r.json();
-
-    })
-
-    .then(function(data){
-
-        window[variable] =
-            crearCapa(
-                data,
-                color,
-                borde
-            );
-
-    })
-
-    .catch(function(error){
-
-        console.error(
-            "Error cargando capa:",
-            error
-        );
-
-    });
+return;
 
 }
 
 
-/* =====================================================
-   CARGAR AÑOS
-===================================================== */
+if(fechaExp){
 
-cargar(
-    "https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2019.geojson",
-    "yellow",
-    "blue",
-    "capa2019"
+var ahora=new Date();
+
+var limite=new Date(fechaExp);
+
+if(ahora>limite){
+
+document.body.innerHTML="⛔ Link expirado";
+
+return;
+
+}
+
+}
+
+
+setTimeout(function(){
+
+window.history.replaceState(
+
+{},
+
+document.title,
+
+window.location.pathname
+
 );
 
-cargar(
-    "https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2020.geojson",
-    "violet",
-    "purple",
-    "capa2020"
-);
-
-cargar(
-    "https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2021.geojson",
-    "blue",
-    "orange",
-    "capa2021"
-);
-
-cargar(
-    "https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2022.geojson",
-    "pink",
-    "red",
-    "capa2022"
-);
-
-cargar(
-    "https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2023.geojson",
-    "darkblue",
-    "cyan",
-    "capa2023"
-);
-
-cargar(
-    "https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2024.geojson",
-    "sandybrown",
-    "magenta",
-    "capa2024"
-);
-
-cargar(
-    "https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2025.geojson",
-    "white",
-    "yellow",
-    "capa2025"
-);
-
-cargar(
-    "https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/2026.geojson",
-    "lightgreen",
-    "#00aa00",
-    "capa2026"
-);
+},10);
 
 
-/* =====================================================
-   CARGAR PREDIOS POR CENSAR
-===================================================== */
+if(btn){
 
-fetch("487_Predios.geojson")
+btn.style.display="none";
 
-.then(function(response){
+}
 
-    if(!response.ok){
+return;
 
-        throw new Error(
-            "No se pudo cargar 487_Predios.geojson"
-        );
-
-    }
-
-    return response.json();
-
-})
-
-.then(function(data){
-
-    capaPrediosCensar = L.geoJSON(
-        data,
-        {
-
-            style:function(){
-
-                return {
-
-                    color:"red",
-                    weight:2,
-                    fillColor:"red",
-                    fillOpacity:0.55,
-                    opacity:1
-
-                };
-
-            },
-
-            onEachFeature:function(
-                feature,
-                layer
-            ){
-
-                var properties =
-                    feature.properties || {};
-
-                /*
-                   AQUÍ SE MUESTRAN TODOS LOS
-                   CAMPOS EXISTENTES DEL PREDIO.
-                */
-
-                layer.bindPopup(
-                    crearPopupTodosLosCampos(
-                        properties
-                    )
-                );
-
-                layer.on({
-
-                    mouseover:function(e){
-
-                        e.target.setStyle({
-
-                            weight:4,
-                            color:"yellow",
-                            fillOpacity:0.8
-
-                        });
-
-                        e.target.openPopup();
-
-                    },
-
-                    mouseout:function(e){
-
-                        e.target.setStyle({
-
-                            weight:2,
-                            color:"red",
-                            fillColor:"red",
-                            fillOpacity:0.55,
-                            opacity:1
-
-                        });
-
-                    }
-
-                });
-
-            }
-
-        }
-    );
+}
 
 
-    /*
-       MOSTRAR CANTIDAD
-    */
-
-    document.getElementById(
-        "cantidadPrediosCensar"
-    ).innerHTML =
-        data.features
-        ? data.features.length
-        : 0;
+var clave=prompt("Ingrese clave de
+administrador");
 
 
-    /*
-       IMPORTANTE:
-       NO se agrega al mapa aquí.
-       Permanece oculto hasta pulsar MOSTRAR.
-    */
+if(clave==="Manta2026"){
 
-})
+if(btn){
 
-.catch(function(error){
+btn.style.display="block";
 
-    console.error(
-        "Error cargando predios por censar:",
-        error
-    );
+}
 
-    document.getElementById(
-        "cantidadPrediosCensar"
-    ).innerHTML = "Error";
+}else{
+
+document.body.innerHTML=
+
+"<h2
+style='text-align:center;margin-top:50px;color:red;'>"+
+
+"🔒 Acceso
+restringido"+
+
+"</h2>";
+
+}
 
 });
 
 
 /* =====================================================
-   QUITAR SOLO CAPAS DE AÑOS
+
+   CAPAS BASE
+
 ===================================================== */
 
-function quitarCapasAnios(){
+var osm=L.tileLayer(
 
-    var capas = [
-        capa2019,
-        capa2020,
-        capa2021,
-        capa2022,
-        capa2023,
-        capa2024,
-        capa2025,
-        capa2026
-    ];
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
-    capas.forEach(function(capa){
+);
 
-        if(
-            capa &&
-            map.hasLayer(capa)
-        ){
 
-            map.removeLayer(capa);
+var googleMaps=L.tileLayer(
 
-        }
+'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
 
-    });
+{
+
+maxZoom:20,
+
+subdomains:['mt0','mt1','mt2','mt3']
 
 }
 
+);
 
-/* =====================================================
-   OCULTAR PREDIOS POR CENSAR
-===================================================== */
 
-function ocultarPrediosCensar(){
+var googleHybrid=L.tileLayer(
 
-    if(
-        capaPrediosCensar &&
-        map.hasLayer(capaPrediosCensar)
-    ){
+'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
 
-        map.removeLayer(
-            capaPrediosCensar
-        );
+{
 
-    }
+maxZoom:25,
 
-    prediosCensarMostrados = false;
+subdomains:['mt0','mt1','mt2','mt3'],
 
-    document.getElementById(
-        "btnPrediosCensar"
-    ).innerHTML = "MOSTRAR";
+opacity:0.6
 
 }
 
-
-/* =====================================================
-   MOSTRAR / OCULTAR PREDIOS POR CENSAR
-===================================================== */
-
-function mostrarPrediosCensar(){
-
-    var boton =
-        document.getElementById(
-            "btnPrediosCensar"
-        );
-
-
-    /*
-       SI YA ESTÁN MOSTRADOS:
-       OCULTAR
-    */
-
-    if(prediosCensarMostrados){
-
-        ocultarPrediosCensar();
-
-        return;
-
-    }
-
-
-    /*
-       PRIMERO QUITAMOS TODOS LOS AÑOS
-    */
-
-    quitarCapasAnios();
-
-
-    /*
-       LUEGO MOSTRAMOS LOS PREDIOS
-    */
-
-    if(capaPrediosCensar){
-
-        map.addLayer(
-            capaPrediosCensar
-        );
-
-        prediosCensarMostrados = true;
-
-        boton.innerHTML = "OCULTAR";
-
-        /*
-           Dejamos el histórico en estado inicial
-           para que no quede seleccionado un año.
-        */
-
-        document.getElementById(
-            "sliderAnios"
-        ).value = 0;
-
-        document.getElementById(
-            "valorAnio"
-        ).innerHTML =
-            "Predios por censar";
-
-    }
-
-}
-
-
-/* =====================================================
-   MOSTRAR UN AÑO
-===================================================== */
-
-function mostrarCapa(anio){
-
-    /*
-       OCULTAR PREDIOS POR CENSAR
-    */
-
-    ocultarPrediosCensar();
-
-
-    /*
-       QUITAR AÑOS ANTERIORES
-    */
-
-    quitarCapasAnios();
-
-
-    var capa = null;
-
-
-    if(anio === 2019){
-
-        capa = capa2019;
-
-    }
-
-    else if(anio === 2020){
-
-        capa = capa2020;
-
-    }
-
-    else if(anio === 2021){
-
-        capa = capa2021;
-
-    }
-
-    else if(anio === 2022){
-
-        capa = capa2022;
-
-    }
-
-    else if(anio === 2023){
-
-        capa = capa2023;
-
-    }
-
-    else if(anio === 2024){
-
-        capa = capa2024;
-
-    }
-
-    else if(anio === 2025){
-
-        capa = capa2025;
-
-    }
-
-    else if(anio === 2026){
-
-        capa = capa2026;
-
-    }
-
-
-    if(capa){
-
-        map.addLayer(capa);
-
-    }
-
-}
-
-
-/* =====================================================
-   MOSTRAR TODOS
-===================================================== */
-
-function mostrarTodos(){
-
-    /*
-       OCULTAR PREDIOS POR CENSAR
-    */
-
-    ocultarPrediosCensar();
-
-
-    /*
-       QUITAR AÑOS ACTUALES
-    */
-
-    quitarCapasAnios();
-
-
-    /*
-       AGREGAR TODOS LOS AÑOS
-    */
-
-    var capas = [
-
-        capa2019,
-        capa2020,
-        capa2021,
-        capa2022,
-        capa2023,
-        capa2024,
-        capa2025,
-        capa2026
-
-    ];
-
-
-    capas.forEach(function(capa){
-
-        if(capa){
-
-            map.addLayer(capa);
-
-        }
-
-    });
-
-}
-
-
-/* =====================================================
-   SLIDER
-===================================================== */
-
-document.getElementById(
-    "sliderAnios"
-).addEventListener(
-    "input",
-    function(){
-
-        var v =
-            parseInt(this.value);
-
-
-        /*
-           0 = SIN SELECCIÓN
-        */
-
-        if(v === 0){
-
-            quitarCapasAnios();
-
-            ocultarPrediosCensar();
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "Mover barra para iniciar";
-
-            return;
-
-        }
-
-
-        /*
-           1 = 2026
-        */
-
-        if(v === 1){
-
-            mostrarCapa(2026);
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "2026";
-
-            return;
-
-        }
-
-
-        /*
-           2 = 2025
-        */
-
-        if(v === 2){
-
-            mostrarCapa(2025);
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "2025";
-
-            return;
-
-        }
-
-
-        /*
-           3 = 2024
-        */
-
-        if(v === 3){
-
-            mostrarCapa(2024);
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "2024";
-
-            return;
-
-        }
-
-
-        /*
-           4 = 2023
-        */
-
-        if(v === 4){
-
-            mostrarCapa(2023);
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "2023";
-
-            return;
-
-        }
-
-
-        /*
-           5 = 2022
-        */
-
-        if(v === 5){
-
-            mostrarCapa(2022);
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "2022";
-
-            return;
-
-        }
-
-
-        /*
-           6 = 2021
-        */
-
-        if(v === 6){
-
-            mostrarCapa(2021);
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "2021";
-
-            return;
-
-        }
-
-
-        /*
-           7 = 2020
-        */
-
-        if(v === 7){
-
-            mostrarCapa(2020);
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "2020";
-
-            return;
-
-        }
-
-
-        /*
-           8 = 2019
-        */
-
-        if(v === 8){
-
-            mostrarCapa(2019);
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "2019";
-
-            return;
-
-        }
-
-
-        /*
-           9 = TODOS
-        */
-
-        if(v === 9){
-
-            mostrarTodos();
-
-            document.getElementById(
-                "valorAnio"
-            ).innerHTML =
-                "TODOS — 3933";
-
-            return;
-
-        }
-
-    }
 );
 
 
 /* =====================================================
-   PARPADEO DE AÑOS
+
+   MAPA
+
 ===================================================== */
 
-var estadoParpadeoAnios = true;
+var map=L.map("mapa",{
 
+center:[-0.999491,-80.761089],
 
-setInterval(function(){
+zoom:14,
 
-    estadoParpadeoAnios =
-        !estadoParpadeoAnios;
+layers:[googleHybrid],
 
+fullscreenControl:true
 
-    var capas = [
-
-        capa2019,
-        capa2020,
-        capa2021,
-        capa2022,
-        capa2023,
-        capa2024,
-        capa2025,
-        capa2026
-
-    ];
-
-
-    capas.forEach(function(capa){
-
-        if(capa){
-
-            capa.eachLayer(
-                function(layer){
-
-                    layer.setStyle({
-
-                        fillOpacity:
-                            estadoParpadeoAnios
-                            ? 0.6
-                            : 0.1,
-
-                        opacity:
-                            estadoParpadeoAnios
-                            ? 1
-                            : 0.3
-
-                    });
-
-                }
-            );
-
-        }
-
-    });
-
-},300);
+});
 
 
 /* =====================================================
-   PARPADEO INDEPENDIENTE DE PREDIOS POR CENSAR
+
+   CAPAS BASE
+
 ===================================================== */
 
-setInterval(function(){
+var baseMaps={
 
-    if(
-        !capaPrediosCensar ||
-        !prediosCensarMostrados
-    ){
+"Open Street Maps":osm,
 
-        return;
+"Google Maps":googleMaps,
 
-    }
+"Google Hybrid":googleHybrid
 
+};
 
-    estadoParpadeoCensar =
-        !estadoParpadeoCensar;
-
-
-    capaPrediosCensar.eachLayer(
-        function(layer){
-
-            layer.setStyle({
-
-                fillOpacity:
-                    estadoParpadeoCensar
-                    ? 0.55
-                    : 0.10,
-
-                opacity:
-                    estadoParpadeoCensar
-                    ? 1
-                    : 0.30
-
-            });
-
-        }
-    );
-
-},300);
+L.control.layers(baseMaps).addTo(map);
 
 
 /* =====================================================
-   BUSCAR PREDIO
+
+   CREAR CAPA CATASTRO
+
 ===================================================== */
 
-function buscarPredio(){
+function crearCapa(datos,relleno,contorno){
 
-    var texto =
-        document.getElementById(
-            "inputBusqueda"
-        ).value
-        .trim()
-        .toLowerCase();
+return L.geoJson(datos,{
 
+style:function(){
 
-    if(!texto){
+return{
 
-        alert(
-            "Ingrese una clave, propietario o cédula."
-        );
+color:contorno,
 
-        return;
+weight:2,
 
-    }
+fillColor:relleno,
 
+fillOpacity:0.5
 
-    var encontrado = false;
+};
 
+},
 
-    var capas = [
 
-        capa2019,
-        capa2020,
-        capa2021,
-        capa2022,
-        capa2023,
-        capa2024,
-        capa2025,
-        capa2026
+onEachFeature:function(feature,capa){
 
-    ];
+console.log(feature.properties);
 
+var p=feature.properties || {};
 
-    capas.forEach(function(capa){
 
-        if(!capa){
+capa.bindPopup(
 
-            return;
+"<strong>Clave Catastral: </strong>"+
 
-        }
+(p.clavecatas || "")+
 
+"<br>"+
 
-        capa.eachLayer(
-            function(layer){
+"<strong>Zona: </strong>"+
 
-                if(encontrado){
+(p.zona || "")+
 
-                    return;
+"<br>"+
 
-                }
+"<strong>Sector: </strong>"+
 
+(p.sector || "")+
 
-                var p =
-                    layer.feature &&
-                    layer.feature.properties
-                    ? layer.feature.properties
-                    : {};
+"<br>"+
 
+"<strong>Manzana: </strong>"+
 
-                var clave =
-                    String(
-                        p.clavecatas || ""
-                    ).toLowerCase();
+(p.manzana || "")+
 
-                var propietario =
-                    String(
-                        p.propietari || ""
-                    ).toLowerCase();
+"<br>"+
 
-                var cedula =
-                    String(
-                        p.documentop || ""
-                    ).toLowerCase();
+"<strong>Lote: </strong>"+
 
+(p.lote || "")+
 
-                if(
-                    clave.includes(texto) ||
-                    propietario.includes(texto) ||
-                    cedula.includes(texto)
-                ){
+"<br>"+
 
-                    encontrado = true;
+"<strong>Propietario: </strong>"+
 
-                    map.fitBounds(
-                        layer.getBounds(),
-                        {
-                            maxZoom:19
-                        }
-                    );
+(p.propietari || "")+
 
-                    layer.openPopup();
+"<br>"+
 
-                }
+"<strong>Cedula: </strong>"+
 
-            }
-        );
+(p.documentop || "")+
 
-    });
+"<br>"+
 
+"<strong>Dirección: </strong>"+
 
-    /*
-       También buscar en predios por censar
-    */
+(p.direccion || "")+
 
-    if(
-        !encontrado &&
-        capaPrediosCensar
-    ){
+"<br>"+
 
-        capaPrediosCensar.eachLayer(
-            function(layer){
+"<strong>Área: </strong>"+
 
-                if(encontrado){
+(p.area_m2 || "")+
 
-                    return;
+"<br>"+
 
-                }
+"<strong>Zona: </strong>"+
 
+(p.zonaurbano || "")+
 
-                var p =
-                    layer.feature &&
-                    layer.feature.properties
-                    ? layer.feature.properties
-                    : {};
+"<br>"+
 
+"<strong>Parroquia: </strong>"+
 
-                var clave =
-                    String(
-                        p.clavecatas ||
-                        p.CLAVECATAS ||
-                        p.ID ||
-                        ""
-                    ).toLowerCase();
+(p.parroquia || "")+
 
-                var propietario =
-                    String(
-                        p.propietari ||
-                        p.POSESIONAR ||
-                        ""
-                    ).toLowerCase();
+"<br>"+
 
-                var cedula =
-                    String(
-                        p.documentop ||
-                        p.CEDULA__R ||
-                        ""
-                    ).toLowerCase();
+"<strong>Barrio: </strong>"+
 
+(p.barrio || "")+
 
-                if(
-                    clave.includes(texto) ||
-                    propietario.includes(texto) ||
-                    cedula.includes(texto)
-                ){
+"<br>"+
 
-                    encontrado = true;
+"<strong>Resolución: </strong>"+
 
+(p.RESOLUCION || "")+
 
-                    /*
-                       Si encontramos un predio por censar,
-                       lo mostramos automáticamente.
-                    */
+"<br>"+
 
-                    quitarCapasAnios();
+"<strong>Observación: </strong>"+
 
+(p.observacio || "")
 
-                    if(
-                        !prediosCensarMostrados
-                    ){
+);
 
-                        map.addLayer(
-                            capaPrediosCensar
-                        );
 
-                        prediosCensarMostrados =
-                            true;
+/* MOUSEOVER */
 
-                        document.getElementById(
-                            "btnPrediosCensar"
-                        ).innerHTML =
-                            "OCULTAR";
+capa.on("mouseover",function(){
 
-                    }
+this.setStyle({
 
+color:'red',
 
-                    map.fitBounds(
-                        layer.getBounds(),
-                        {
-                            maxZoom:19
-                        }
-                    );
+weight:4,
 
+fillOpacity:0.9
 
-                    layer.openPopup();
+});
 
-                }
+this.openPopup();
 
-            }
-        );
+});
 
-    }
 
+/* MOUSEOUT */
 
-    if(!encontrado){
+capa.on("mouseout",function(){
 
-        alert(
-            "No se encontró el predio."
-        );
+this.setStyle({
 
-    }
+color:contorno,
+
+weight:2,
+
+fillColor:relleno,
+
+fillOpacity:0.5
+
+});
+
+this.closePopup();
+
+});
+
+}
+
+});
 
 }
 
 
 /* =====================================================
-   BOTÓN BUSCAR
+
+   VARIABLES DE CAPAS
+
 ===================================================== */
 
-document.getElementById(
-    "btnBuscar"
-).addEventListener(
-    "click",
-    buscarPredio
-);
+var capa2019;
+
+var capa2020;
+
+var capa2021;
+
+var capa2022;
+
+var capa2023;
+
+var capa2024;
+
+var capa2025;
+
+var capa2026;
 
 
 /* =====================================================
-   ENTER EN BUSCADOR
+
+   CANTIDAD DE PREDIOS
+
 ===================================================== */
 
-document.getElementById(
-    "inputBusqueda"
-).addEventListener(
-    "keydown",
-    function(e){
+var prediosPorAnio={
 
-        if(e.key === "Enter"){
+2019:287,
 
-            buscarPredio();
+2020:307,
 
-        }
+2021:1048,
 
-    }
-);
+2022:339,
+
+2023:524,
+
+2024:793,
+
+2025:455,
+
+2026:180
+
+};
 
 
 /* =====================================================
-   BÚSQUEDA POR VOZ
+
+   TOTAL
+
+   287 + 307 + 1048 +
+339 +
+
+   524 + 793 + 455 +
+180
+
+   = 3933
+
 ===================================================== */
 
-document.getElementById(
-    "btnVoz"
-).addEventListener(
-    "click",
-    function(){
+var totalHistorico=3933;
+/* =====================================================
+   PREDIOS POR CENSAR - 487
+   CAPA INDEPENDIENTE
+   No se agrega a obtenerCapas(), por lo que el código
+   histórico original sigue funcionando por separado.
+===================================================== */
 
-        var SpeechRecognition =
-            window.SpeechRecognition ||
-            window.webkitSpeechRecognition;
+var capaPrediosCensar=null;
+var modoPrediosCensar=false;
+var parpadeoCensoActivo=false;
+var estadoParpadeoCenso=true;
 
-
-        if(!SpeechRecognition){
-
-            alert(
-                "Su navegador no permite búsqueda por voz."
-            );
-
-            return;
-
-        }
+var URL_PREDIOS_CENSAR=
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/487_Predios.geojson";
 
 
-        var recognition =
-            new SpeechRecognition();
+/* Escapar valores para el popup. */
+function escaparHTML(valor){
 
+if(valor===null || valor===undefined){
+return "";
+}
 
-        recognition.lang = "es-EC";
+return String(valor)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
-        recognition.continuous = false;
-
-        recognition.interimResults = false;
-
-
-        recognition.onresult =
-            function(event){
-
-                var texto =
-                    event.results[0][0]
-                    .transcript
-                    .toLowerCase();
-
-
-                /*
-                   Correcciones habituales
-                   para números y símbolos.
-                */
-
-                texto =
-                    texto
-                    .replace(
-                        /raya/g,
-                        "-"
-                    )
-                    .replace(
-                        /guion/g,
-                        "-"
-                    )
-                    .replace(
-                        /guión/g,
-                        "-"
-                    )
-                    .replace(
-                        /slash/g,
-                        "/"
-                    );
-
-
-                document.getElementById(
-                    "inputBusqueda"
-                ).value = texto;
-
-
-                buscarPredio();
-
-            };
-
-
-        recognition.onerror =
-            function(){
-
-                alert(
-                    "No se pudo realizar la búsqueda por voz."
-                );
-
-            };
-
-
-        recognition.start();
-
-    }
-);
+}
 
 
 /* =====================================================
-   BOTÓN GENERAR LINK ADMINISTRATIVO
+   INFORMACIÓN DEL PREDIO POR CENSAR
+   Muestra solamente los atributos de 487_Predios.geojson.
 ===================================================== */
 
-document.getElementById(
-    "btnAdmin"
-).addEventListener(
-    "click",
-    function(){
+function popupPredioCensar(feature){
 
-        var minutos =
-            prompt(
-                "¿Cuántos MINUTOS quieres que dure el link? (60 = 1 hora)"
-            );
+var p=feature.properties || {};
 
+var htmlPopup=
+"<div style='min-width:230px;max-width:320px;'>" +
+"<div style='font-weight:bold;color:red;font-size:16px;margin-bottom:8px;'>" +
+"PREDIO POR CENSAR" +
+"</div>";
 
-        if(!minutos){
+var campos=Object.keys(p);
 
-            return;
+if(campos.length===0){
 
-        }
+htmlPopup +=
+"<strong>Sin información de atributos</strong>";
 
+}else{
 
-        minutos =
-            parseInt(minutos);
+campos.forEach(function(campo){
 
+var valor=p[campo];
 
-        if(
-            isNaN(minutos) ||
-            minutos <= 0
-        ){
+if(valor===null || valor===undefined){
+valor="";
+}
 
-            minutos = 60;
+htmlPopup +=
+"<div style='margin-bottom:4px;'>" +
+"<strong>" + escaparHTML(campo) + ":</strong> " +
+escaparHTML(valor) +
+"</div>";
 
-        }
+});
 
+}
 
-        var ahora =
-            new Date();
+htmlPopup += "</div>";
 
+return htmlPopup;
 
-        ahora.setMinutes(
-            ahora.getMinutes() +
-            minutos
-        );
-
-
-        var fechaExp =
-            ahora.toISOString();
-
-
-        var urlBase =
-            window.location.origin +
-            window.location.pathname;
-
-
-        var linkFinal =
-            urlBase +
-            "?exp=" +
-            encodeURIComponent(
-                fechaExp
-            ) +
-            "&token=ABC123";
-
-
-        if(
-            navigator.clipboard &&
-            navigator.clipboard.writeText
-        ){
-
-            navigator.clipboard.writeText(
-                linkFinal
-            );
-
-        }
-
-
-        alert(
-            "Link válido por " +
-            minutos +
-            " minutos\n\n" +
-            linkFinal
-        );
-
-    }
-);
+}
 
 
 /* =====================================================
-   CAPA ADMINISTRATIVA DE PARROQUIAS
-   NO PARPADEA
+   CREAR CAPA 487
 ===================================================== */
 
-fetch(
-    "https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/refs/heads/main/Parroquias_Urbanas_y_Rurales.geojson"
-)
+function crearCapaPrediosCensar(datos){
 
-.then(function(response){
+return L.geoJson(datos,{
 
-    if(!response.ok){
+style:function(){
 
-        throw new Error(
-            "Error cargando parroquias"
-        );
+return{
 
-    }
+color:"red",
+weight:2.5,
+opacity:1,
+fillColor:"yellow",
+fillOpacity:0.75
 
-    return response.json();
+};
+
+},
+
+onEachFeature:function(feature,layer){
+
+layer.bindPopup(
+popupPredioCensar(feature),
+{
+closeButton:true,
+autoClose:false,
+closeOnClick:false
+}
+);
+
+
+/* MOUSEOVER: muestra la información SOLO de 487. */
+layer.on("mouseover",function(){
+
+this._censoHover=true;
+
+this.setStyle({
+
+color:"red",
+weight:4,
+opacity:1,
+fillColor:"orange",
+fillOpacity:0.95
+
+});
+
+this.bringToFront();
+
+this.openPopup();
+
+});
+
+
+/* MOUSEOUT */
+layer.on("mouseout",function(){
+
+this._censoHover=false;
+
+this.setStyle({
+
+color:"red",
+weight:2.5,
+opacity:estadoParpadeoCenso ? 1 : 0.35,
+fillColor:"yellow",
+fillOpacity:estadoParpadeoCenso ? 0.75 : 0.12
+
+});
+
+});
+
+
+/* CLIC: deja disponible el mismo popup. */
+layer.on("click",function(){
+
+this.bringToFront();
+
+this.openPopup();
+
+});
+
+}
+
+});
+
+}
+
+
+/* =====================================================
+   CARGAR 487_PREDIOS.GEOJSON
+===================================================== */
+
+function cargarPrediosCensar(){
+
+if(capaPrediosCensar){
+
+activarModoPrediosCensar();
+
+return;
+
+}
+
+fetch(URL_PREDIOS_CENSAR)
+
+.then(function(r){
+
+if(!r.ok){
+
+throw new Error(
+"HTTP " + r.status + " - " + URL_PREDIOS_CENSAR
+);
+
+}
+
+return r.json();
 
 })
 
 .then(function(data){
 
-    var capaParroquias =
-        L.geoJSON(
-            data,
-            {
+capaPrediosCensar=
+crearCapaPrediosCensar(data);
 
-                style:function(){
-
-                    return {
-
-                        color:"blue",
-                        weight:2,
-                        fillOpacity:0,
-                        opacity:1
-
-                    };
-
-                },
-
-                onEachFeature:
-                function(
-                    feature,
-                    layer
-                ){
-
-                    var p =
-                        feature.properties ||
-                        {};
-
-
-                    /*
-                       Intentar encontrar nombre
-                       de parroquia.
-                    */
-
-                    var nombre =
-                        p.PARROQUIA ||
-                        p.parroquia ||
-                        p.NOMBRE ||
-                        p.nombre ||
-                        "";
-
-
-                    if(nombre){
-
-                        layer.bindTooltip(
-                            String(nombre),
-                            {
-                                permanent:true,
-                                direction:"center",
-                                className:"etiquetaParroquia"
-                            }
-                        );
-
-                    }
-
-                }
-
-            }
-        )
-        .addTo(map);
+activarModoPrediosCensar();
 
 })
 
 .catch(function(error){
 
-    console.error(
-        "Error cargando parroquias:",
-        error
-    );
+console.error(
+"Error cargando 487_Predios.geojson:",
+error
+);
+
+alert(
+"No se pudo cargar 487_Predios.geojson.\n\n" +
+"Revise que el archivo exista en GitHub y que el nombre sea 487_Predios.geojson."
+);
+
+});
+
+}
+
+
+/* =====================================================
+   BOTÓN MOSTRAR / OCULTAR
+===================================================== */
+
+function mostrarPrediosCensar(){
+
+if(!capaPrediosCensar){
+
+cargarPrediosCensar();
+
+return;
+
+}
+
+if(modoPrediosCensar){
+
+desactivarModoPrediosCensar();
+
+}else{
+
+activarModoPrediosCensar();
+
+}
+
+}
+
+
+/* =====================================================
+   ACTIVAR MODO PREDIOS POR CENSAR
+   Al activarlo se ocultan las capas históricas.
+   Así la información del mapa queda exclusivamente
+   en 487_Predios.geojson.
+===================================================== */
+
+function activarModoPrediosCensar(){
+
+if(!capaPrediosCensar){
+return;
+}
+
+
+/* Ocultar SOLO las capas históricas originales. */
+obtenerCapas().forEach(function(capa){
+
+if(capa && map.hasLayer(capa)){
+
+map.removeLayer(capa);
+
+}
+
+});
+
+modoPrediosCensar=true;
+
+map.addLayer(capaPrediosCensar);
+
+
+/* Ajustar vista a los 487 predios. */
+try{
+
+if(capaPrediosCensar.getBounds().isValid()){
+
+map.fitBounds(
+capaPrediosCensar.getBounds(),
+{
+padding:[20,20],
+maxZoom:17
+}
+);
+
+}
+
+}catch(e){
+
+console.warn(
+"No se pudo ajustar el mapa a 487_Predios:",
+e
+);
+
+}
+
+
+/* Estado inicial del parpadeo. */
+estadoParpadeoCenso=true;
+
+capaPrediosCensar.eachLayer(function(layer){
+
+layer._censoHover=false;
+
+layer.setStyle({
+
+color:"red",
+weight:2.5,
+opacity:1,
+fillColor:"yellow",
+fillOpacity:0.75
+
+});
+
+});
+
+
+var boton=document.getElementById("btnCenso");
+
+if(boton){
+
+boton.innerHTML="OCULTAR";
+
+}
+
+}
+
+
+/* =====================================================
+   DESACTIVAR 487 Y RECUPERAR EL AÑO ORIGINAL
+===================================================== */
+
+function desactivarModoPrediosCensar(){
+
+if(capaPrediosCensar && map.hasLayer(capaPrediosCensar)){
+
+map.removeLayer(capaPrediosCensar);
+
+}
+
+modoPrediosCensar=false;
+
+var boton=document.getElementById("btnCenso");
+
+if(boton){
+
+boton.innerHTML="MOSTRAR";
+
+}
+
+
+/* Recupera exactamente la selección del slider. */
+if(slider){
+
+slider.oninput();
+
+}
+
+}
+
+
+/* =====================================================
+   PARPADEO EXCLUSIVO DE LOS 487 PREDIOS
+===================================================== */
+
+function activarParpadeoPrediosCensar(){
+
+if(parpadeoCensoActivo){
+return;
+}
+
+parpadeoCensoActivo=true;
+
+setInterval(function(){
+
+if(!capaPrediosCensar || !modoPrediosCensar){
+return;
+}
+
+estadoParpadeoCenso=!estadoParpadeoCenso;
+
+capaPrediosCensar.eachLayer(function(layer){
+
+/* Si el mouse está sobre el predio, no quitar
+   el resaltado ni el popup. */
+if(layer._censoHover){
+return;
+}
+
+if(estadoParpadeoCenso){
+
+layer.setStyle({
+
+color:"red",
+weight:2.5,
+opacity:1,
+fillColor:"yellow",
+fillOpacity:0.75
+
+});
+
+}else{
+
+layer.setStyle({
+
+color:"red",
+weight:2.5,
+opacity:0.35,
+fillColor:"yellow",
+fillOpacity:0.12
+
+});
+
+}
+
+});
+
+},500);
+
+}
+
+
+/* Iniciar el temporizador independiente. */
+activarParpadeoPrediosCensar();
+
+
+
+
+
+/* =====================================================
+
+   CARGAR CAPAS
+
+===================================================== */
+
+function cargar(url,color,borde,variable){
+
+fetch(url)
+
+.then(function(r){
+
+if(!r.ok){
+
+throw new Error(
+
+"Error cargando "+url
+
+);
+
+}
+
+return r.json();
+
+})
+
+.then(function(data){
+
+window[variable]=crearCapa(
+
+data,
+
+color,
+
+borde
+
+);
+
+})
+
+.catch(function(error){
+
+console.error(
+
+"Error cargando capa:",
+
+error
+
+);
+
+});
+
+}
+
+
+/* =====================================================
+
+   CAPAS 2019 - 2026
+
+===================================================== */
+
+cargar(
+
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2019.geojson",
+
+"yellow",
+
+"blue",
+
+"capa2019"
+
+);
+
+
+cargar(
+
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2020.geojson",
+
+"violet",
+
+"purple",
+
+"capa2020"
+
+);
+
+
+cargar(
+
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2021.geojson",
+
+"blue",
+
+"orange",
+
+"capa2021"
+
+);
+
+
+cargar(
+
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2022.geojson",
+
+"pink",
+
+"red",
+
+"capa2022"
+
+);
+
+
+cargar(
+
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2023.geojson",
+
+"darkblue",
+
+"cyan",
+
+"capa2023"
+
+);
+
+
+cargar(
+
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2024.geojson",
+
+"sandybrown",
+
+"Magenta",
+
+"capa2024"
+
+);
+
+
+cargar(
+
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2025.geojson",
+
+"white",
+
+"yellow",
+
+"capa2025"
+
+);
+
+
+/* =====================================================
+
+   NUEVO AÑO 2026
+
+===================================================== */
+
+cargar(
+
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/2026.geojson",
+
+"lightgreen",
+
+"green",
+
+"capa2026"
+
+);
+
+
+/* =====================================================
+
+   TODAS LAS CAPAS
+
+===================================================== */
+
+function obtenerCapas(){
+
+return [
+
+capa2019,
+
+capa2020,
+
+capa2021,
+
+capa2022,
+
+capa2023,
+
+capa2024,
+
+capa2025,
+
+capa2026
+
+];
+
+}
+
+
+/* =====================================================
+
+   QUITAR TODAS LAS
+CAPAS
+
+===================================================== */
+
+function quitarTodasLasCapas(){
+
+obtenerCapas().forEach(function(capa){
+
+if(capa && map.hasLayer(capa)){
+
+map.removeLayer(capa);
+
+}
+
+});
+
+}
+
+
+/* =====================================================
+
+   MOSTRAR CAPA
+
+===================================================== */
+
+function mostrarCapa(anio){
+
+quitarTodasLasCapas();
+
+
+if(anio==2019 && capa2019)
+
+map.addLayer(capa2019);
+
+
+if(anio==2020 && capa2020)
+
+map.addLayer(capa2020);
+
+
+if(anio==2021 && capa2021)
+
+map.addLayer(capa2021);
+
+
+if(anio==2022 && capa2022)
+
+map.addLayer(capa2022);
+
+
+if(anio==2023 && capa2023)
+
+map.addLayer(capa2023);
+
+
+if(anio==2024 && capa2024)
+
+map.addLayer(capa2024);
+
+
+if(anio==2025 && capa2025)
+
+map.addLayer(capa2025);
+
+
+if(anio==2026 && capa2026)
+
+map.addLayer(capa2026);
+
+}
+
+
+/* =====================================================
+
+   MOSTRAR TODOS
+
+===================================================== */
+
+function mostrarTodos(){
+
+quitarTodasLasCapas();
+
+
+if(capa2019)
+
+map.addLayer(capa2019);
+
+
+if(capa2020)
+
+map.addLayer(capa2020);
+
+
+if(capa2021)
+
+map.addLayer(capa2021);
+
+
+if(capa2022)
+
+map.addLayer(capa2022);
+
+
+if(capa2023)
+
+map.addLayer(capa2023);
+
+
+if(capa2024)
+
+map.addLayer(capa2024);
+
+
+if(capa2025)
+
+map.addLayer(capa2025);
+
+
+if(capa2026)
+
+map.addLayer(capa2026);
+
+}
+
+
+/* =====================================================
+
+   SLIDER HISTORICO
+
+   0 = INICIO
+
+   1 = 2026
+
+   2 = 2025
+
+   3 = 2024
+
+   4 = 2023
+
+   5 = 2022
+
+   6 = 2021
+
+   7 = 2020
+
+   8 = 2019
+
+   9 = TODOS
+
+===================================================== */
+
+var slider=document.getElementById(
+
+"sliderTiempo"
+
+);
+
+
+slider.oninput=function(){
+
+var v=parseInt(this.value);
+
+
+quitarTodasLasCapas();
+
+
+/* ================= 0 ================= */
+
+if(v==0){
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="";
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"Mover barra para iniciar";
+
+return;
+
+}
+
+
+/* ================= 2026 ================= */
+
+if(v==1){
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="2026";
+
+mostrarCapa(2026);
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"2026 → 180 Predios";
+
+return;
+
+}
+
+
+/* ================= 2025 ================= */
+
+if(v==2){
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="2025";
+
+mostrarCapa(2025);
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"2025 → 455 Predios";
+
+return;
+
+}
+
+
+/* ================= 2024 ================= */
+
+if(v==3){
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="2024";
+
+mostrarCapa(2024);
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"2024 → 793 Predios";
+
+return;
+
+}
+
+
+/* ================= 2023 ================= */
+
+if(v==4){
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="2023";
+
+mostrarCapa(2023);
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"2023 → 524 Predios";
+
+return;
+
+}
+
+
+/* ================= 2022 ================= */
+
+if(v==5){
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="2022";
+
+mostrarCapa(2022);
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"2022 → 339 Predios";
+
+return;
+
+}
+
+
+/* ================= 2021 ================= */
+
+if(v==6){
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="2021";
+
+mostrarCapa(2021);
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"2021 → 1048 Predios";
+
+return;
+
+}
+
+
+/* ================= 2020 ================= */
+
+if(v==7){
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="2020";
+
+mostrarCapa(2020);
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"2020 → 307 Predios";
+
+return;
+
+}
+
+
+/* ================= 2019 ================= */
+
+if(v==8){
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="2019";
+
+mostrarCapa(2019);
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"2019 → 287 Predios";
+
+return;
+
+}
+
+
+/* ================= TODOS ================= */
+
+if(v==9){
+
+mostrarTodos();
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="TODOS";
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"TOTAL → 3933 Predios";
+
+return;
+
+}
+
+};
+
+
+/* =====================================================
+
+   INICIAR MAPA EN
+BLANCO
+
+===================================================== */
+
+quitarTodasLasCapas();
+
+document.getElementById(
+
+"valorAnio"
+
+).innerHTML="";
+
+document.getElementById(
+
+"conteoPredios"
+
+).innerHTML=
+
+"Mover barra para iniciar";
+
+
+/* =====================================================
+
+   PARPADEO
+
+===================================================== */
+
+function activarParpadeo(){
+
+var estado=true;
+
+
+setInterval(function(){
+
+obtenerCapas().forEach(function(capa){
+
+if(capa){
+
+capa.eachLayer(function(layer){
+
+if(estado){
+
+layer.setStyle({
+
+fillOpacity:0.1,
+
+opacity:0.3
+
+});
+
+}else{
+
+layer.setStyle({
+
+fillOpacity:0.6,
+
+opacity:1
+
+});
+
+}
+
+});
+
+}
+
+});
+
+
+estado=!estado;
+
+},300);
+
+}
+
+
+activarParpadeo();
+
+
+/* =====================================================
+
+   BUSCAR PREDIO
+
+===================================================== */
+
+function buscarPredio(){
+
+var texto=
+
+document.getElementById(
+
+"textoBuscar"
+
+).value
+
+.toLowerCase()
+
+.trim();
+
+
+if(texto===""){
+
+return;
+
+}
+
+
+var capas=obtenerCapas();
+
+
+/* RESTAURAR ESTILOS */
+
+capas.forEach(function(capa){
+
+if(capa){
+
+capa.eachLayer(function(layer){
+
+capa.resetStyle(layer);
+
+});
+
+}
+
+});
+
+
+/* BUSCAR */
+
+capas.forEach(function(capa){
+
+if(capa){
+
+capa.eachLayer(function(layer){
+
+var p=layer.feature.properties || {};
+
+
+var clave=
+
+(p.clavecatas || "")
+
+.toString()
+
+.toLowerCase();
+
+
+var propietario=
+
+(p.propietari || "")
+
+.toString()
+
+.toLowerCase();
+
+
+var cedula=
+
+(p.documentop || "")
+
+.toString()
+
+.toLowerCase();
+
+
+if(
+
+clave.includes(texto) ||
+
+propietario.includes(texto) ||
+
+cedula.includes(texto)
+
+){
+
+if(!map.hasLayer(capa)){
+
+map.addLayer(capa);
+
+}
+
+
+map.fitBounds(
+
+layer.getBounds()
+
+);
+
+
+layer.setStyle({
+
+color:'red',
+
+weight:4,
+
+fillColor:'red',
+
+fillOpacity:0.9
+
+});
+
+
+layer.openPopup();
+
+}
+
+});
+
+}
+
+});
+
+}
+
+
+/* =====================================================
+
+   BUSQUEDA POR VOZ
+
+===================================================== */
+
+function iniciarVoz(){
+
+var SpeechRecognition=
+
+window.SpeechRecognition ||
+
+window.webkitSpeechRecognition;
+
+
+if(!SpeechRecognition){
+
+alert(
+
+"Tu navegador no soporta reconocimiento de voz"
+
+);
+
+return;
+
+}
+
+
+var reconocimiento=
+
+new SpeechRecognition();
+
+
+reconocimiento.lang="es-EC";
+
+reconocimiento.interimResults=false;
+
+reconocimiento.maxAlternatives=1;
+
+
+reconocimiento.start();
+
+
+reconocimiento.onresult=function(event){
+
+var texto=
+
+event.results[0][0].transcript;
+
+
+console.log(
+
+"Texto detectado:",
+
+texto
+
+);
+
+
+texto=texto
+
+.replace(/raya/g,"-")
+
+.replace(/guion/g,"-")
+
+.replace(/guión/g,"-")
+
+.replace(/slash/g,"/")
+
+.replace(/barra/g,"/")
+
+.replace(/punto/g,".")
+
+.replace(/coma/g,",")
+
+.replace(/espacio/g," ")
+
+.replace(/guion bajo/g,"_");
+
+
+document.getElementById(
+
+"textoBuscar"
+
+).value=texto;
+
+
+buscarPredio();
+
+};
+
+
+reconocimiento.onerror=function(event){
+
+console.log(
+
+"Error voz:",
+
+event.error
+
+);
+
+alert(
+
+"Error en reconocimiento de voz"
+
+);
+
+};
+
+}
+
+
+/* =====================================================
+
+   CAPAS
+ADMINISTRATIVAS
+
+===================================================== */
+
+var grupoLimites=
+
+L.layerGroup().addTo(map);
+
+
+function capaLimite(datos,color){
+
+return L.geoJson(datos,{
+
+style:{
+
+color:color,
+
+weight:4,
+
+opacity:1,
+
+fillOpacity:0
+
+},
+
+
+onEachFeature:function(feature,layer){
+
+if(feature.properties){
+
+var nombre=
+
+feature.properties.nombre ||
+
+feature.properties.NOMBRE ||
+
+feature.properties.parroquia ||
+
+feature.properties.barrio ||
+
+"";
+
+
+if(nombre!=""){
+
+layer.bindTooltip(
+
+nombre,
+
+{
+
+permanent:false,
+
+direction:"center",
+
+className:"labelLimite"
+
+}
+
+);
+
+}
+
+}
+
+}
+
+});
+
+}
+
+
+/* =====================================================
+
+   COLORES PARROQUIAS
+
+===================================================== */
+
+function getColorParroquia(i){
+
+var colores=[
+
+"#fde0dd",
+
+"#e0ecf4",
+
+"#e6f5d0",
+
+"#fff2ae",
+
+"#f1e2cc",
+
+"#d9f0f3",
+
+"#fddbc7",
+
+"#e7d4e8",
+
+"#ccebc5",
+
+"#fbb4ae",
+
+"#b3cde3",
+
+"#decbe4",
+
+"#fed9a6",
+
+"#ffffcc",
+
+"#e5d8bd"
+
+];
+
+return colores[
+
+i % colores.length
+
+];
+
+}
+
+
+/* =====================================================
+
+   PARROQUIAS
+
+===================================================== */
+
+fetch(
+
+"https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/refs/heads/main/Parroquias_Urbanas_y_Rurales.geojson"
+
+)
+
+.then(function(r){
+
+return r.json();
+
+})
+
+.then(function(data){
+
+var coloresParroquia={};
+
+var i=0;
+
+
+var parroquias=L.geoJson(
+
+data,
+
+{
+
+style:function(feature){
+
+var nombre=(
+
+feature.properties.parroquia ||
+
+feature.properties.nombre ||
+
+feature.properties.name ||
+
+feature.properties.NOMBRE ||
+
+"sin_nombre"
+
+)
+
+.toString()
+
+.trim()
+
+.toUpperCase();
+
+
+if(!coloresParroquia[nombre]){
+
+coloresParroquia[nombre]=
+
+getColorParroquia(i++);
+
+}
+
+
+return{
+
+color:"#333",
+
+weight:1.5,
+
+dashArray:"10,15",
+
+fillColor:
+
+coloresParroquia[nombre],
+
+fillOpacity:0.30,
+
+opacity:0.9
+
+};
+
+},
+
+
+onEachFeature:function(feature,layer){
+
+var nombre=
+
+feature.properties.name ||
+
+feature.properties.nombre ||
+
+feature.properties.NOMBRE ||
+
+feature.properties.parroquia ||
+
+"";
+
+
+if(nombre!=""){
+
+layer.bindTooltip(
+
+nombre,
+
+{
+
+permanent:true,
+
+direction:"center",
+
+className:"labelParroquia"
+
+}
+
+);
+
+}
+
+}
+
+}
+
+);
+
+
+grupoLimites.addLayer(
+
+parroquias
+
+);
+
+});
+
+
+/* =====================================================
+
+   LEYENDA
+
+===================================================== */
+
+var leyenda=
+
+L.control({
+
+position:'bottomright'
+
+});
+
+
+leyenda.onAdd=function(map){
+
+var div=
+
+L.DomUtil.create(
+
+'div',
+
+'info legend'
+
+);
+
+
+div.style.background='white';
+
+div.style.padding='10px';
+
+div.style.borderRadius='8px';
+
+div.style.boxShadow=
+
+'0 0 5px gray';
+
+
+div.innerHTML=
+
+'<h3>Simbología</h3>';
+
+
+var años=[
+
+2026,
+
+2025,
+
+2024,
+
+2023,
+
+2022,
+
+2021,
+
+2020,
+
+2019
+
+];
+
+
+var colores=[
+
+'green',
+
+'yellow',
+
+'Magenta',
+
+'cyan',
+
+'red',
+
+'orange',
+
+'purple',
+
+'blue'
+
+];
+
+
+for(
+
+var i=0;
+
+i<años.length;
+
+i++
+
+){
+
+div.innerHTML+=
+
+'<i style="background:'+
+
+colores[i]+
+
+'; width:18px; height:18px; display:inline-block;
+margin-right:5px;"></i> '+
+
+años[i]+
+
+'<br>';
+
+}
+
+
+return div;
+
+};
+
+
+leyenda.addTo(map);
+
+
+/* =====================================================
+
+   GENERAR LINK
+
+===================================================== */
+
+document.getElementById(
+
+"btnAdmin"
+
+).addEventListener(
+
+"click",
+
+function(){
+
+var minutos=prompt(
+
+"¿Cuántos MINUTOS quieres que dure el link? (60 = 1
+hora)"
+
+);
+
+
+if(!minutos)
+
+return;
+
+
+minutos=parseInt(minutos);
+
+
+if(
+
+isNaN(minutos) ||
+
+minutos<=0
+
+){
+
+minutos=60;
+
+}
+
+
+var ahora=new Date();
+
+
+ahora.setMinutes(
+
+ahora.getMinutes()+minutos
+
+);
+
+
+var fechaExp=
+
+ahora.toISOString();
+
+
+var urlBase=
+
+window.location.origin+
+
+window.location.pathname;
+
+
+var linkFinal=
+
+urlBase+
+
+"?exp="+
+
+fechaExp+
+
+"&token=ABC123";
+
+
+navigator.clipboard.writeText(
+
+linkFinal
+
+);
+
+
+alert(
+
+"Link válido por "+
+
+minutos+
+
+" minutos\n\n"+
+
+linkFinal
+
+);
 
 });
 
 
 </script>
 
+
 </body>
+
 </html>
