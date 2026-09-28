@@ -395,112 +395,55 @@ Buscar
 ===================================================== */
 
 window.addEventListener("load",function(){
-
 var params=new URLSearchParams(window.location.search);
-
 var token=params.get("token");
-
 var fechaExp=params.get("exp");
-
 var adminModo=params.get("admin");
-
 var TOKEN_VALIDO="ABC123";
-
 var btn=document.getElementById("btnAdmin");
 
+function bloquearExpirado(){
+document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>⛔ Link expirado</h2>";
+}
 
 if(adminModo==="1"){
-
-if(btn){
-
-btn.style.display="block";
-
-}
-
+if(btn){ btn.style.display="block"; }
 return;
-
 }
-
 
 if(token){
-
 if(token!==TOKEN_VALIDO){
-
 document.body.innerHTML="🔒 Token inválido";
-
 return;
-
 }
-
 
 if(fechaExp){
-
-var ahora=new Date();
-
 var limite=new Date(fechaExp);
-
-if(ahora>limite){
-
-document.body.innerHTML="⛔ Link expirado";
-
+// 1. Verificar al abrir
+if(new Date() > limite){
+bloquearExpirado();
 return;
-
+}
+// 2. Verificar cada 10 segundos mientras está abierta
+setInterval(function(){
+if(new Date() > limite){
+bloquearExpirado();
+}
+},10000);
 }
 
-}
-
-
-setTimeout(function(){
-
-window.history.replaceState(
-
-{},
-
-document.title,
-
-window.location.pathname
-
-);
-
-},10);
-
-
-if(btn){
-
-btn.style.display="none";
-
-}
-
+// YA NO borramos el exp con replaceState, porque lo necesitamos para seguir verificando
+if(btn){ btn.style.display="none"; }
 return;
-
 }
-
 
 var clave=prompt("Ingrese clave de administrador");
-
-
 if(clave==="Manta2026"){
-
-if(btn){
-
-btn.style.display="block";
-
-}
-
+if(btn){ btn.style.display="block"; }
 }else{
-
-document.body.innerHTML=
-
-"<h2 style='text-align:center;margin-top:50px;color:red;'>"+
-
-"🔒 Acceso restringido"+
-
-"</h2>";
-
+document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Acceso restringido</h2>";
 }
-
 });
-
 
 /* =====================================================
 
@@ -2413,11 +2356,7 @@ var linkFinal=
 
 urlBase+
 
-"?exp="+
-
-fechaExp+
-
-"&token=ABC123";
+"?exp="+ encodeURIComponent(fechaExp)+ "&token=ABC123"
 
 
 navigator.clipboard.writeText(
