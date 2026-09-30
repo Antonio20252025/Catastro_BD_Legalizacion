@@ -215,7 +215,36 @@ padding:8px;
 max-width:180px;
 
 }
-
+   
+/* ===== MODAL CLAVE CON OJITO ===== */
+#overlayClave{
+position:fixed; top:0; left:0; width:100%; height:100%;
+background:rgba(0,0,0,0.6); z-index:5000;
+display:flex; align-items:center; justify-content:center;
+}
+#boxClave{
+background:white; padding:25px; border-radius:12px;
+box-shadow:0 5px 20px rgba(0,0,0,0.3); text-align:center;
+width:90%; max-width:320px;
+}
+#boxClave h3{margin:0 0 15px 0; color:#004bad;}
+.input-pass-wrapper{
+position:relative; display:flex; align-items:center;
+border:1.5px solid #004bad; border-radius:8px; overflow:hidden;
+}
+.input-pass-wrapper input{
+flex:1; border:none; padding:12px; font-size:16px; outline:none;
+}
+.input-pass-wrapper button{
+background:none; border:none; cursor:pointer;
+font-size:20px; padding:0 12px;
+}
+#boxClave .btn-ingresar{
+margin-top:15px; width:100%; padding:10px;
+background:#004bad; color:white; border:none;
+border-radius:8px; font-weight:bold; cursor:pointer;
+}
+   
 }
 
 
@@ -306,6 +335,16 @@ Generar Link
 
 </button>
 
+<div id="overlayClave" style="display:none;">
+  <div id="boxClave">
+    <h3>🔒 Acceso restringido</h3>
+    <div class="input-pass-wrapper">
+      <input type="password" id="adminPassInput" placeholder="Ingrese clave">
+      <button type="button" id="btnOjo" onclick="toggleClave()">👁️</button>
+    </div>
+    <button class="btn-ingresar" onclick="verificarClave()">Ingresar</button>
+  </div>
+</div> 
 
 <!-- ================= CONTROL HISTORICO
 ================= -->
@@ -387,64 +426,80 @@ Buscar
 
 <script>
 
-
 /* =====================================================
-
-   MODO ADMINISTRADOR
-
+   MODO ADMINISTRADOR - CON CLAVE OCULTA Y OJITO
 ===================================================== */
+function toggleClave(){
+  var input = document.getElementById("adminPassInput");
+  var ojo = document.getElementById("btnOjo");
+  if(input.type === "password"){
+    input.type = "text";
+    ojo.textContent = "🙈";
+  }else{
+    input.type = "password";
+    ojo.textContent = "👁️";
+  }
+}
+
+function mostrarModalClave(){
+  document.getElementById("overlayClave").style.display = "flex";
+  document.getElementById("adminPassInput").focus();
+}
+
+function verificarClave(){
+  var clave = document.getElementById("adminPassInput").value.trim();
+  var btn = document.getElementById("btnAdmin");
+  // acepta manta2026 o Manta2026
+  if(clave.toLowerCase() === "manta2026"){
+    document.getElementById("overlayClave").style.display = "none";
+    if(btn){ btn.style.display="block"; }
+  }else{
+    document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Acceso restringido</h2>";
+  }
+}
 
 window.addEventListener("load",function(){
-var params=new URLSearchParams(window.location.search);
-var token=params.get("token");
-var fechaExp=params.get("exp");
-var adminModo=params.get("admin");
-var TOKEN_VALIDO="ABC123";
-var btn=document.getElementById("btnAdmin");
+  var params=new URLSearchParams(window.location.search);
+  var token=params.get("token");
+  var fechaExp=params.get("exp");
+  var adminModo=params.get("admin");
+  var TOKEN_VALIDO="ABC123";
+  var btn=document.getElementById("btnAdmin");
 
-function bloquearExpirado(){
-document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>⛔ Link expirado</h2>";
-}
+  function bloquearExpirado(){
+    document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>⛔ Link expirado</h2>";
+  }
 
-if(adminModo==="1"){
-if(btn){ btn.style.display="block"; }
-return;
-}
+  if(adminModo==="1"){
+    if(btn){ btn.style.display="block"; }
+    return;
+  }
 
-if(token){
-if(token!==TOKEN_VALIDO){
-document.body.innerHTML="🔒 Token inválido";
-return;
-}
+  if(token){
+    if(token!==TOKEN_VALIDO){
+      document.body.innerHTML="🔒 Token inválido";
+      return;
+    }
+    if(fechaExp){
+      var limite=new Date(fechaExp);
+      if(new Date() > limite){ bloquearExpirado(); return; }
+      setInterval(function(){
+        if(new Date() > limite){ bloquearExpirado(); }
+      },10000);
+    }
+    if(btn){ btn.style.display="none"; }
+    return;
+  }
 
-if(fechaExp){
-var limite=new Date(fechaExp);
-// 1. Verificar al abrir
-if(new Date() > limite){
-bloquearExpirado();
-return;
-}
-// 2. Verificar cada 10 segundos mientras está abierta
-setInterval(function(){
-if(new Date() > limite){
-bloquearExpirado();
-}
-},10000);
-}
-
-// YA NO borramos el exp con replaceState, porque lo necesitamos para seguir verificando
-if(btn){ btn.style.display="none"; }
-return;
-}
-
-var clave=prompt("Ingrese clave de administrador");
-if(clave==="Manta2026"){
-if(btn){ btn.style.display="block"; }
-}else{
-document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Acceso restringido</h2>";
-}
+  // EN VEZ DE prompt, MOSTRAMOS EL MODAL CON OJITO
+  mostrarModalClave();
+  
+  // permitir dar Enter
+  document.getElementById("adminPassInput").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ verificarClave(); }
+  });
 });
-
+   
 /* =====================================================
 
    CAPAS BASE
