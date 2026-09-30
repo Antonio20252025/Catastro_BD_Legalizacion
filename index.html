@@ -290,6 +290,7 @@ border:1.5px solid red;
       <input type="password" id="adminPassInput" placeholder="Ingrese clave">
       <button type="button" id="btnOjo" onclick="toggleClave()">👁️‍🗨️</button>
     </div>
+    <div id="errorClave" style="display:none; color:red; margin-top:10px; font-weight:bold; font-size:14px;">Contraseña incorrecta</div>
     <button class="btn-ingresar" onclick="verificarClave()">Ingresar</button>
   </div>
 </div>
@@ -446,62 +447,33 @@ function toggleClave(){
 
 function mostrarModalClave(){
   document.getElementById("overlayClave").style.display = "flex";
+  document.getElementById("adminPassInput").value = "";
+  document.getElementById("errorClave").style.display = "none";
   document.getElementById("adminPassInput").focus();
 }
 
 function verificarClave(){
   var clave = document.getElementById("adminPassInput").value.trim();
   var btn = document.getElementById("btnAdmin");
-  // acepta manta2026 o Manta2026
+  // acepta gadmanta2026
   if(clave.toLowerCase() === "gadmanta2026"){
     document.getElementById("overlayClave").style.display = "none";
     if(btn){ btn.style.display="block"; }
   }else{
-    document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>Ingresa tu contraseña</h2>";
+    // YA NO BORRA LA PAGINA - solo muestra error y sigue en la ventana
+    var errorDiv = document.getElementById("errorClave");
+    errorDiv.style.display = "block";
+    errorDiv.textContent = "Contraseña incorrecta";
+    document.getElementById("adminPassInput").value = "";
+    document.getElementById("adminPassInput").focus();
+    // vibración chiquita
+    document.getElementById("boxClave").animate([
+      { transform: 'translateX(-5px)' },
+      { transform: 'translateX(5px)' },
+      { transform: 'translateX(0)' }
+    ], { duration: 200 });
   }
 }
-
-window.addEventListener("load",function(){
-  var params=new URLSearchParams(window.location.search);
-  var token=params.get("token");
-  var fechaExp=params.get("exp");
-  var adminModo=params.get("admin");
-  var TOKEN_VALIDO="ABC123";
-  var btn=document.getElementById("btnAdmin");
-
-  function bloquearExpirado(){
-    document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>⛔ Link expirado</h2>";
-  }
-
-  if(adminModo==="1"){
-    if(btn){ btn.style.display="block"; }
-    return;
-  }
-
-  if(token){
-    if(token!==TOKEN_VALIDO){
-      document.body.innerHTML="🔒 Token inválido";
-      return;
-    }
-    if(fechaExp){
-      var limite=new Date(fechaExp);
-      if(new Date() > limite){ bloquearExpirado(); return; }
-      setInterval(function(){
-        if(new Date() > limite){ bloquearExpirado(); }
-      },10000);
-    }
-    if(btn){ btn.style.display="none"; }
-    return;
-  }
-
-  // EN VEZ DE prompt, MOSTRAMOS EL MODAL CON OJITO
-  mostrarModalClave();
-  
-  // permitir dar Enter
-  document.getElementById("adminPassInput").addEventListener("keydown", function(e){
-    if(e.key === "Enter"){ verificarClave(); }
-  });
-});
 
 /* =====================================================
 
