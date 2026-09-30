@@ -8,18 +8,64 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen@latest/Control.FullScreen.css"/>
 <script src="https://unpkg.com/leaflet.fullscreen@latest/Control.FullScreen.js"></script>
+
 <style>
-body{background:#d2e2f7;margin:10px;font-family:Arial;}
-.logo-manta{position:absolute;left:20px;top:5px;width:120px;z-index:1000;}
-.titulo{text-align:center;line-height:0.5;}
-#mapa{width:100%;height:75vh;border:2px solid #004bad;}
-#controlTiempo{position:absolute;bottom:15px;left:20px;background:white;padding:10px;border-radius:8px;box-shadow:0 0 5px gray;z-index:1000;font-weight:bold;max-width:260px;}
+body{
+background:#d2e2f7;
+margin:10px;
+font-family:Arial;
+}
+.logo-manta{
+position:absolute;
+left:20px;
+top:5px;
+width:120px;
+z-index:1000;
+}
+.titulo{
+text-align:center;
+line-height:0.5;
+}
+#mapa{
+width:100%;
+height:75vh;
+border:2px solid #004bad;
+}
+#controlTiempo{
+position:absolute;
+bottom:15px;
+left:20px;
+background:white;
+padding:10px;
+border-radius:8px;
+box-shadow:0 0 5px gray;
+z-index:1000;
+font-weight:bold;
+max-width:260px;
+}
 #controlTiempo input{width:100%;}
-#buscadorPredio{position:absolute;bottom:5px;right:110px;background:white;padding:10px;border-radius:8px;box-shadow:0 0 5px gray;z-index:1000;font-weight:bold;max-width:260px;}
+#buscadorPredio{
+position:absolute;
+bottom:5px;
+right:110px;
+background:white;
+padding:10px;
+border-radius:8px;
+box-shadow:0 0 5px gray;
+z-index:1000;
+font-weight:bold;
+max-width:260px;
+}
 #buscadorPredio input{width:100%;margin-top:5px;}
 #buscadorPredio button{margin-top:5px;width:100%;}
 .legend{font-size:10px;}
-.labelParroquia{background:transparent!important;border:none!important;box-shadow:none!important;color:blue;font-size:10px;}
+.labelParroquia{
+background:transparent!important;
+border:none!important;
+box-shadow:none!important;
+color:blue;
+font-size:10px;
+}
 @media(max-width:768px){
 .logo-manta{width:90px;left:10px;}
 h4{font-size:12px;}
@@ -27,99 +73,215 @@ h4{font-size:12px;}
 #controlTiempo{left:10px;bottom:10px;font-size:12px;padding:8px;max-width:180px;}
 #buscadorPredio{right:10px;bottom:10px;font-size:12px;padding:8px;max-width:180px;}
 }
-#controlCenso{position:absolute;bottom:15px;left:300px;background:white;padding:6px 8px;border-radius:6px;box-shadow:0 0 4px gray;z-index:1000;font-weight:bold;max-width:145px;text-align:center;border:1.5px solid red;}
+#controlCenso{
+position:absolute;
+bottom:15px;
+left:300px;
+background:white;
+padding:6px 8px;
+border-radius:6px;
+box-shadow:0 0 4px gray;
+z-index:1000;
+font-weight:bold;
+max-width:145px;
+text-align:center;
+border:1.5px solid red;
+}
 #controlCenso.tituloCenso{color:red;font-size:10px;font-weight:bold;line-height:1.1;}
 #controlCenso.numeroCenso{color:#cc5500;font-size:20px;font-weight:bold;margin:3px 0;}
 #controlCenso button{margin-top:4px;width:85px;height:24px;background:red;color:white;border:none;border-radius:5px;font-size:11px;font-weight:bold;cursor:pointer;}
+#controlCenso button:hover{background:#cc0000;}
+@media(max-width:768px){
+#controlCenso{left:205px;bottom:10px;padding:5px 6px;max-width:115px;}
+#controlCenso.tituloCenso{font-size:9px;}
+#controlCenso.numeroCenso{font-size:18px;}
+#controlCenso button{width:75px;height:22px;font-size:10px;}
+}
 
-/* ===== MODAL CLAVE CON OJITO SVG ===== */
-#overlayClave{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.65);z-index:5000;display:none;align-items:center;justify-content:center;}
-#boxClave{background:white;padding:25px;border-radius:12px;box-shadow:0 5px 20px rgba(0,0,0,0.4);text-align:center;width:90%;max-width:320px;}
-#boxClave h3{margin:0 0 15px 0;color:#004bad;}
-.input-pass-wrapper{position:relative;display:flex;align-items:center;border:2px solid #004bad;border-radius:8px;overflow:hidden;}
-.input-pass-wrapper input{flex:1;border:none;padding:12px;font-size:16px;outline:none;}
-.input-pass-wrapper button{background:none;border:none;cursor:pointer;padding:0 12px;}
-#btnOjo svg{pointer-events:none;display:block;}
-.input-pass-wrapper button:hover{opacity:0.7;}
-.btn-ingresar{margin-top:15px;width:100%;padding:11px;background:#004bad;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:15px;}
+/* ===== MODAL CLAVE CON OJITO ===== */
+#overlayClave{
+position:fixed; top:0; left:0; width:100%; height:100%;
+background:rgba(0,0,0,0.65); z-index:5000;
+display:none; align-items:center; justify-content:center;
+}
+#boxClave{
+background:white; padding:25px; border-radius:12px;
+box-shadow:0 5px 20px rgba(0,0,0,0.4); text-align:center;
+width:90%; max-width:320px;
+}
+#boxClave h3{margin:0 0 15px 0; color:#004bad;}
+.input-pass-wrapper{
+position:relative; display:flex; align-items:center;
+border:2px solid #004bad; border-radius:8px; overflow:hidden;
+}
+.input-pass-wrapper input{
+flex:1; border:none; padding:12px; font-size:16px; outline:none;
+}
+.input-pass-wrapper button{
+background:none; border:none; cursor:pointer;
+font-size:22px; padding:0 12px; line-height:1;
+}
+#boxClave.btn-ingresar{
+margin-top:15px; width:100%; padding:11px;
+background:#004bad; color:white; border:none;
+border-radius:8px; font-weight:bold; cursor:pointer; font-size:15px;
+}
+#boxClave.btn-ingresar:hover{background:#003380;}
 </style>
 </head>
+
 <body>
 
-<!-- MODAL CON PUNTITOS Y OJITO -->
+<!-- MODAL CLAVE -->
 <div id="overlayClave">
   <div id="boxClave">
     <h3>🔒 Acceso restringido</h3>
     <div class="input-pass-wrapper">
-      <input type="password" id="adminPassInput" placeholder="Ingrese clave">
-      <button type="button" id="btnOjo" onclick="toggleClave()">
-        <svg id="iconOjoAbierto" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#004bad" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-        <svg id="iconOjoCerrado" style="display:none;" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#004bad" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.53 9.53a3 3 0 1 0 4.24 4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-      </button>
+      <input type="password" id="adminPassInput" placeholder="Ingrese clave manta2026">
+      <button type="button" id="btnOjo" onclick="toggleClave()">👁️</button>
     </div>
     <button class="btn-ingresar" onclick="verificarClave()">Ingresar</button>
   </div>
 </div>
 
-<div class="titulo"><h4>GOBIERNO AUTÓNOMO DESCENTRALIZADO DEL CANTÓN MANTA</h4><h4>UNIDAD DE GESTIÓN Y TITULARIZACIÓN DE TIERRAS</h4><img src="imagenmanta.png" class="logo-manta"></div>
+<div class="titulo">
+<h4>GOBIERNO AUTÓNOMO DESCENTRALIZADO DEL CANTÓN MANTA</h4>
+<h4>UNIDAD DE GESTIÓN Y TITULARIZACIÓN DE TIERRAS</h4>
+<img src="imagenmanta.png" class="logo-manta">
+</div>
+
 <div id="mapa"></div>
-<button id="btnAdmin" style="display:none;position:fixed;top:10px;right:10px;z-index:2000;padding:8px;background:#004bad;color:white;border:none;border-radius:5px;cursor:pointer;">Generar Link</button>
-<div id="controlTiempo">Año: <span id="valorAnio"></span><br><input type="range" min="0" max="9" value="0" step="1" id="sliderTiempo"><br><span id="conteoPredios">Mover barra para iniciar</span></div>
-<div id="controlCenso"><div class="tituloCenso">PREDIOS POR REGULARIZAR</div><div class="numeroCenso" id="numeroCenso">487</div><button id="btnCenso" onclick="mostrarPrediosCensar()">MOSTRAR</button></div>
-<div id="buscadorPredio">Buscar Predio<br><input type="text" id="textoBuscar" placeholder="Clave, propietario o cédula"><br><button onclick="buscarPredio()">Buscar</button><button onclick="iniciarVoz()">🎤 Hablar</button></div>
+
+<button id="btnAdmin" style="display:none; position:fixed; top:10px; right:10px; z-index:2000; padding:8px; background:#004bad; color:white; border:none; border-radius:5px; cursor:pointer;">Generar Link</button>
+
+<div id="controlTiempo">
+Año: <span id="valorAnio"></span><br>
+<input type="range" min="0" max="9" value="0" step="1" id="sliderTiempo"><br>
+<span id="conteoPredios">Mover barra para iniciar</span>
+</div>
+
+<div id="controlCenso">
+<div class="tituloCenso">PREDIOS POR REGULARIZAR</div>
+<div class="numeroCenso" id="numeroCenso">487</div>
+<button id="btnCenso" onclick="mostrarPrediosCensar()">MOSTRAR</button>
+</div>
+
+<div id="buscadorPredio">
+Buscar Predio<br>
+<input type="text" id="textoBuscar" placeholder="Clave, propietario o cédula"><br>
+<button onclick="buscarPredio()">Buscar</button>
+<button onclick="iniciarVoz()">🎤 Hablar</button>
+</div>
 
 <script>
+/* =====================================================
+   MODO ADMINISTRADOR - CON CLAVE OCULTA Y OJITO
+===================================================== */
 function toggleClave(){
-  var input=document.getElementById("adminPassInput");
-  var abierto=document.getElementById("iconOjoAbierto");
-  var cerrado=document.getElementById("iconOjoCerrado");
-  if(input.type==="password"){input.type="text";abierto.style.display="none";cerrado.style.display="block";}
-  else{input.type="password";abierto.style.display="block";cerrado.style.display="none";}
+  var input = document.getElementById("adminPassInput");
+  var ojo = document.getElementById("btnOjo");
+  if(input.type === "password"){
+    input.type = "text";
+    ojo.textContent = "🙈";
+  }else{
+    input.type = "password";
+    ojo.textContent = "👁️";
+  }
 }
-function mostrarModalClave(){document.getElementById("overlayClave").style.display="flex";document.getElementById("adminPassInput").focus();}
+function mostrarModalClave(){
+  document.getElementById("overlayClave").style.display = "flex";
+  document.getElementById("adminPassInput").focus();
+}
 function verificarClave(){
-  var clave=document.getElementById("adminPassInput").value.trim();
-  if(clave.toLowerCase()==="manta2026"){
-    document.getElementById("overlayClave").style.display="none";
-    document.getElementById("btnAdmin").style.display="block";
-  }else{document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Acceso restringido</h2>";}
+  var clave = document.getElementById("adminPassInput").value.trim();
+  var btn = document.getElementById("btnAdmin");
+  if(clave.toLowerCase() === "manta2026"){
+    document.getElementById("overlayClave").style.display = "none";
+    if(btn){ btn.style.display="block"; }
+  }else{
+    document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Acceso restringido</h2>";
+  }
 }
+
 window.addEventListener("load",function(){
 var params=new URLSearchParams(window.location.search);
-var token=params.get("token");var fechaExp=params.get("exp");var adminModo=params.get("admin");
-var TOKEN_VALIDO="ABC123";var btn=document.getElementById("btnAdmin");
-function bloquearExpirado(){document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>⛔ Link expirado</h2>";}
-if(adminModo==="1"){if(btn){btn.style.display="block";}return;}
-if(token){
-if(token!==TOKEN_VALIDO){document.body.innerHTML="🔒 Token inválido";return;}
-if(fechaExp){var limite=new Date(fechaExp);if(new Date()>limite){bloquearExpirado();return;}setInterval(function(){if(new Date()>limite){bloquearExpirado();}},10000);}
-if(btn){btn.style.display="none";}return;
+var token=params.get("token");
+var fechaExp=params.get("exp");
+var adminModo=params.get("admin");
+var TOKEN_VALIDO="ABC123";
+var btn=document.getElementById("btnAdmin");
+
+function bloquearExpirado(){
+document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>⛔ Link expirado</h2>";
 }
+
+if(adminModo==="1"){
+if(btn){ btn.style.display="block"; }
+return;
+}
+if(token){
+if(token!==TOKEN_VALIDO){
+document.body.innerHTML="🔒 Token inválido";
+return;
+}
+if(fechaExp){
+var limite=new Date(fechaExp);
+if(new Date() > limite){ bloquearExpirado(); return; }
+setInterval(function(){ if(new Date() > limite){ bloquearExpirado(); } },10000);
+}
+if(btn){ btn.style.display="none"; }
+return;
+}
+// EN VEZ DE PROMPT - MODAL CON PUNTITOS Y OJITO
 mostrarModalClave();
-document.getElementById("adminPassInput").addEventListener("keydown",function(e){if(e.key==="Enter"){verificarClave();}});
+document.getElementById("adminPassInput").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){ verificarClave(); }
+});
 });
 
-/* MAPA Y CAPAS - TU CODIGO ORIGINAL INTACTO */
+/* =====================================================
+   CAPAS BASE
+===================================================== */
 var osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 var googleMaps=L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{maxZoom:20,subdomains:['mt0','mt1','mt2','mt3']});
 var googleHybrid=L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{maxZoom:25,subdomains:['mt0','mt1','mt2','mt3'],opacity:0.6});
+
+/* MAPA */
 var map=L.map("mapa",{center:[-0.999491,-80.761089],zoom:14,layers:[googleHybrid],fullscreenControl:true});
 var baseMaps={"Open Street Maps":osm,"Google Maps":googleMaps,"Google Hybrid":googleHybrid};
 L.control.layers(baseMaps).addTo(map);
-function crearCapa(datos,relleno,contorno){return L.geoJson(datos,{style:function(){return{color:contorno,weight:2,fillColor:relleno,fillOpacity:0.5};},onEachFeature:function(feature,capa){var p=feature.properties||{};capa.bindPopup("<strong>Clave: </strong>"+(p.clavecatas||"")+"<br><strong>Propietario: </strong>"+(p.propietari||"")+"<br><strong>Cedula: </strong>"+(p.documentop||"")+"<br><strong>Área: </strong>"+(p.area_m2||""));capa.on("mouseover",function(){this.setStyle({color:'red',weight:4,fillOpacity:0.9});this.openPopup();});capa.on("mouseout",function(){this.setStyle({color:contorno,weight:2,fillColor:relleno,fillOpacity:0.5});this.closePopup();});}});}
-var capa2019,capa2020,capa2021,capa2022,capa2023,capa2024,capa2025,capa2026;
-var capaPrediosCensar=null,modoPrediosCensar=false,predioCensarSeleccionado=null,estadoParpadeoCenso=true;
+
+function crearCapa(datos,relleno,contorno){
+return L.geoJson(datos,{
+style:function(){return{color:contorno,weight:2,fillColor:relleno,fillOpacity:0.5};},
+onEachFeature:function(feature,capa){
+var p=feature.properties || {};
+capa.bindPopup("<strong>Clave Catastral: </strong>"+(p.clavecatas || "")+"<br>"+"<strong>Zona: </strong>"+(p.zona || "")+"<br>"+"<strong>Sector: </strong>"+(p.sector || "")+"<br>"+"<strong>Manzana: </strong>"+(p.manzana || "")+"<br>"+"<strong>Lote: </strong>"+(p.lote || "")+"<br>"+"<strong>Propietario: </strong>"+(p.propietari || "")+"<br>"+"<strong>Cedula: </strong>"+(p.documentop || "")+"<br>"+"<strong>Dirección: </strong>"+(p.direccion || "")+"<br>"+"<strong>Área: </strong>"+(p.area_m2 || "")+"<br>"+"<strong>Zona: </strong>"+(p.zonaurbano || "")+"<br>"+"<strong>Parroquia: </strong>"+(p.parroquia || "")+"<br>"+"<strong>Barrio: </strong>"+(p.barrio || "")+"<br>"+"<strong>Resolución: </strong>"+(p.RESOLUCION || "")+"<br>"+"<strong>Observación: </strong>"+(p.observacio || ""));
+capa.on("mouseover",function(){this.setStyle({color:'red',weight:4,fillOpacity:0.9});this.openPopup();});
+capa.on("mouseout",function(){this.setStyle({color:contorno,weight:2,fillColor:relleno,fillOpacity:0.5});this.closePopup();});
+}
+});
+}
+
+var capa2019;var capa2020;var capa2021;var capa2022;var capa2023;var capa2024;var capa2025;var capa2026;
+var prediosPorAnio={2019:287,2020:307,2021:1048,2022:339,2023:524,2024:792,2025:455,2026:180};
+var totalHistorico=3933;
+
+/* PREDIOS POR CENSAR - 487 */
+var capaPrediosCensar=null;var modoPrediosCensar=false;var predioCensarSeleccionado=null;var estadoParpadeoCenso=true;
 var URL_PREDIOS_CENSAR="https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/487_Predios.geojson";
-function escaparHTMLCenso(v){if(v===null||v===undefined)return"";return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
-function popupPredioCensar(f){var p=f.properties||{};var h="<div style='min-width:230px'><div style='font-weight:bold;color:red;'>PREDIO POR CENSAR</div>";Object.keys(p).forEach(function(c){h+="<div><strong>"+escaparHTMLCenso(c)+":</strong> "+escaparHTMLCenso(p[c])+"</div>";});return h+"</div>";}
-function estiloCensoNormal(l){if(predioCensarSeleccionado===l){l.setStyle({color:"red",weight:4,fillColor:"orange",fillOpacity:0.95});return;}l.setStyle({color:"red",weight:2.5,opacity:estadoParpadeoCenso?1:0.3,fillColor:"yellow",fillOpacity:estadoParpadeoCenso?0.7:0.1});}
-function crearCapaPrediosCensar(d){return L.geoJson(d,{style:function(){return{color:"red",weight:2.5,fillColor:"yellow",fillOpacity:0.7}},onEachFeature:function(f,l){l.bindPopup(popupPredioCensar(f),{autoClose:true});l.on("click",function(){if(predioCensarSeleccionado&&predioCensarSeleccionado!==this)estiloCensoNormal(predioCensarSeleccionado);predioCensarSeleccionado=this;this.setStyle({color:"red",weight:4,fillColor:"orange",fillOpacity:0.95});this.bringToFront();this.openPopup();});}});}
-function cargarPrediosCensar(){if(capaPrediosCensar){activarModoPrediosCensar();return;}fetch(URL_PREDIOS_CENSAR).then(r=>r.json()).then(data=>{document.getElementById("numeroCenso").innerHTML=data.features.length;capaPrediosCensar=crearCapaPrediosCensar(data);activarModoPrediosCensar();});}
-function activarModoPrediosCensar(){obtenerCapas().forEach(c=>{if(c&&map.hasLayer(c))map.removeLayer(c);});modoPrediosCensar=true;map.addLayer(capaPrediosCensar);document.getElementById("btnCenso").innerHTML="OCULTAR";}
-function desactivarModoPrediosCensar(){if(capaPrediosCensar&&map.hasLayer(capaPrediosCensar))map.removeLayer(capaPrediosCensar);modoPrediosCensar=false;document.getElementById("btnCenso").innerHTML="MOSTRAR";if(slider)slider.oninput();}
-function mostrarPrediosCensar(){if(!capaPrediosCensar){cargarPrediosCensar();return;}if(modoPrediosCensar)desactivarModoPrediosCensar();else activarModoPrediosCensar();}
-setInterval(function(){if(!capaPrediosCensar||!modoPrediosCensar)return;estadoParpadeoCenso=!estadoParpadeoCenso;capaPrediosCensar.eachLayer(l=>{if(predioCensarSeleccionado!==l)estiloCensoNormal(l);});},400);
-function cargar(url,color,borde,variable){fetch(url).then(r=>r.json()).then(data=>{window[variable]=crearCapa(data,color,borde);});}
+function escaparHTMLCenso(valor){if(valor===null || valor===undefined){ return ""; }return String(valor).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+function popupPredioCensar(feature){var p=feature.properties || {};var html="<div style='min-width:230px;max-width:330px;'>"+"<div style='font-weight:bold;color:red;font-size:16px;margin-bottom:8px;'>PREDIO POR CENSAR</div>";Object.keys(p).forEach(function(campo){var valor=p[campo];if(valor===null || valor===undefined){ valor=""; }html+="<div style='margin-bottom:4px;'><strong>"+escaparHTMLCenso(campo)+":</strong> "+escaparHTMLCenso(valor)+"</div>";});html+="</div>";return html;}
+function estiloCensoNormal(layer){if(predioCensarSeleccionado===layer){layer.setStyle({color:"red",weight:4,opacity:1,fillColor:"orange",fillOpacity:0.95});return;}layer.setStyle({color:"red",weight:2.5,opacity:estadoParpadeoCenso? 1 : 0.30,fillColor:"yellow",fillOpacity:estadoParpadeoCenso? 0.70 : 0.10});}
+function crearCapaPrediosCensar(datos){return L.geoJson(datos,{style:function(){return {color:"red",weight:2.5,opacity:1,fillColor:"yellow",fillOpacity:0.70};},onEachFeature:function(feature,layer){layer.bindPopup(popupPredioCensar(feature),{closeButton:true,autoClose:true,closeOnClick:true});layer.on("click",function(){if(predioCensarSeleccionado && predioCensarSeleccionado!==this){estiloCensoNormal(predioCensarSeleccionado);}map.closePopup();predioCensarSeleccionado=this;this.setStyle({color:"red",weight:4,opacity:1,fillColor:"orange",fillOpacity:0.95});this.bringToFront();this.openPopup();});layer.on("mouseover",function(){if(predioCensarSeleccionado!==this){this.setStyle({color:"red",weight:3,opacity:1,fillColor:"yellow",fillOpacity:0.85});}});layer.on("mouseout",function(){if(predioCensarSeleccionado!==this){estiloCensoNormal(this);}});}});}
+function cargarPrediosCensar(){if(capaPrediosCensar){activarModoPrediosCensar();return;}fetch(URL_PREDIOS_CENSAR).then(function(r){if(!r.ok){ throw new Error("HTTP "+r.status); }return r.json();}).then(function(data){var cantidad=(data.features && data.features.length)? data.features.length : 487;document.getElementById("numeroCenso").innerHTML=cantidad;capaPrediosCensar=crearCapaPrediosCensar(data);activarModoPrediosCensar();}).catch(function(error){console.error("Error cargando 487_Predios.geojson:",error);alert("No se pudo cargar 487_Predios.geojson.");});}
+function activarModoPrediosCensar(){if(!capaPrediosCensar){ return; }obtenerCapas().forEach(function(capa){if(capa && map.hasLayer(capa)){ map.removeLayer(capa); }});modoPrediosCensar=true;predioCensarSeleccionado=null;map.closePopup();map.addLayer(capaPrediosCensar);var boton=document.getElementById("btnCenso");if(boton){ boton.innerHTML="OCULTAR"; }}
+function desactivarModoPrediosCensar(){if(capaPrediosCensar && map.hasLayer(capaPrediosCensar)){map.removeLayer(capaPrediosCensar);}map.closePopup();predioCensarSeleccionado=null;modoPrediosCensar=false;var boton=document.getElementById("btnCenso");if(boton){ boton.innerHTML="MOSTRAR"; }if(slider){ slider.oninput(); }}
+function mostrarPrediosCensar(){if(!capaPrediosCensar){cargarPrediosCensar();return;}if(modoPrediosCensar){desactivarModoPrediosCensar();}else{activarModoPrediosCensar();}}
+setInterval(function(){if(!capaPrediosCensar ||!modoPrediosCensar){ return; }estadoParpadeoCenso=!estadoParpadeoCenso;capaPrediosCensar.eachLayer(function(layer){if(predioCensarSeleccionado===layer){ return; }estiloCensoNormal(layer);});},400);
+
+/* CARGAR CAPAS */
+function cargar(url,color,borde,variable){fetch(url).then(function(r){if(!r.ok){throw new Error("Error cargando "+url);}return r.json();}).then(function(data){window[variable]=crearCapa(data,color,borde);}).catch(function(error){console.error("Error cargando capa:",error);});}
 cargar("https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2019.geojson","yellow","blue","capa2019");
 cargar("https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2020.geojson","violet","purple","capa2020");
 cargar("https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2021.geojson","blue","orange","capa2021");
@@ -128,15 +290,136 @@ cargar("https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/
 cargar("https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2024.geojson","sandybrown","Magenta","capa2024");
 cargar("https://raw.githubusercontent.com/Antonio20252025/Catastro_Legalizacion/main/2025.geojson","white","yellow","capa2025");
 cargar("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/main/2026.geojson","lightgreen","green","capa2026");
-function obtenerCapas(){return[capa2019,capa2020,capa2021,capa2022,capa2023,capa2024,capa2025,capa2026];}
-function quitarTodasLasCapas(){obtenerCapas().forEach(c=>{if(c&&map.hasLayer(c))map.removeLayer(c);});}
-function mostrarCapa(a){quitarTodasLasCapas();if(a==2019&&capa2019)map.addLayer(capa2019);if(a==2020&&capa2020)map.addLayer(capa2020);if(a==2021&&capa2021)map.addLayer(capa2021);if(a==2022&&capa2022)map.addLayer(capa2022);if(a==2023&&capa2023)map.addLayer(capa2023);if(a==2024&&capa2024)map.addLayer(capa2024);if(a==2025&&capa2025)map.addLayer(capa2025);if(a==2026&&capa2026)map.addLayer(capa2026);}
-function mostrarTodos(){quitarTodasLasCapas();obtenerCapas().forEach(c=>{if(c)map.addLayer(c);});}
+
+function obtenerCapas(){return [capa2019,capa2020,capa2021,capa2022,capa2023,capa2024,capa2025,capa2026];}
+function quitarTodasLasCapas(){obtenerCapas().forEach(function(capa){if(capa && map.hasLayer(capa)){map.removeLayer(capa);}});}
+function mostrarCapa(anio){quitarTodasLasCapas();if(anio==2019 && capa2019)map.addLayer(capa2019);if(anio==2020 && capa2020)map.addLayer(capa2020);if(anio==2021 && capa2021)map.addLayer(capa2021);if(anio==2022 && capa2022)map.addLayer(capa2022);if(anio==2023 && capa2023)map.addLayer(capa2023);if(anio==2024 && capa2024)map.addLayer(capa2024);if(anio==2025 && capa2025)map.addLayer(capa2025);if(anio==2026 && capa2026)map.addLayer(capa2026);}
+function mostrarTodos(){quitarTodasLasCapas();if(capa2019)map.addLayer(capa2019);if(capa2020)map.addLayer(capa2020);if(capa2021)map.addLayer(capa2021);if(capa2022)map.addLayer(capa2022);if(capa2023)map.addLayer(capa2023);if(capa2024)map.addLayer(capa2024);if(capa2025)map.addLayer(capa2025);if(capa2026)map.addLayer(capa2026);}
+
 var slider=document.getElementById("sliderTiempo");
-slider.oninput=function(){var v=parseInt(this.value);quitarTodasLasCapas();if(v==0){valorAnio.innerHTML="";conteoPredios.innerHTML="Mover barra para iniciar";return;}if(v==1){valorAnio.innerHTML="2026";mostrarCapa(2026);conteoPredios.innerHTML="2026 → 180 Predios";return;}if(v==2){valorAnio.innerHTML="2025";mostrarCapa(2025);conteoPredios.innerHTML="2025 → 455 Predios";return;}if(v==3){valorAnio.innerHTML="2024";mostrarCapa(2024);conteoPredios.innerHTML="2024 → 792 Predios";return;}if(v==4){valorAnio.innerHTML="2023";mostrarCapa(2023);conteoPredios.innerHTML="2023 → 524 Predios";return;}if(v==5){valorAnio.innerHTML="2022";mostrarCapa(2022);conteoPredios.innerHTML="2022 → 339 Predios";return;}if(v==6){valorAnio.innerHTML="2021";mostrarCapa(2021);conteoPredios.innerHTML="2021 → 1048 Predios";return;}if(v==7){valorAnio.innerHTML="2020";mostrarCapa(2020);conteoPredios.innerHTML="2020 → 307 Predios";return;}if(v==8){valorAnio.innerHTML="2019";mostrarCapa(2019);conteoPredios.innerHTML="2019 → 287 Predios";return;}if(v==9){mostrarTodos();valorAnio.innerHTML="TODOS";conteoPredios.innerHTML="TOTAL → 3932 Predios";return;}};
-function buscarPredio(){var t=textoBuscar.value.toLowerCase().trim();if(t==="")return;obtenerCapas().forEach(c=>{if(c)c.eachLayer(l=>c.resetStyle(l));});obtenerCapas().forEach(c=>{if(c)c.eachLayer(l=>{var p=l.feature.properties||{};if(((p.clavecatas||"")+"").toLowerCase().includes(t)||((p.propietari||"")+"").toLowerCase().includes(t)||((p.documentop||"")+"").toLowerCase().includes(t)){if(!map.hasLayer(c))map.addLayer(c);map.fitBounds(l.getBounds());l.setStyle({color:'red',weight:4,fillColor:'red',fillOpacity:0.9});l.openPopup();}});});}
-function iniciarVoz(){var SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert("No soporta voz");return;}var r=new SR();r.lang="es-EC";r.start();r.onresult=function(e){textoBuscar.value=e.results[0][0].transcript;buscarPredio();};}
-document.getElementById("btnAdmin").addEventListener("click",function(){var m=prompt("¿Minutos?");m=parseInt(m);if(isNaN(m))m=60;var a=new Date();a.setMinutes(a.getMinutes()+m);var exp=a.toISOString();var base=location.origin+location.pathname;var link=base+"?exp="+encodeURIComponent(exp)+"&token=ABC123";navigator.clipboard.writeText(link);alert("Link por "+m+" min\n"+link);});
+slider.oninput=function(){
+var v=parseInt(this.value);quitarTodasLasCapas();
+if(v==0){document.getElementById("valorAnio").innerHTML="";document.getElementById("conteoPredios").innerHTML="Mover barra para iniciar";return;}
+if(v==1){document.getElementById("valorAnio").innerHTML="2026";mostrarCapa(2026);document.getElementById("conteoPredios").innerHTML="2026 → 180 Predios";return;}
+if(v==2){document.getElementById("valorAnio").innerHTML="2025";mostrarCapa(2025);document.getElementById("conteoPredios").innerHTML="2025 → 455 Predios";return;}
+if(v==3){document.getElementById("valorAnio").innerHTML="2024";mostrarCapa(2024);document.getElementById("conteoPredios").innerHTML="2024 → 792 Predios";return;}
+if(v==4){document.getElementById("valorAnio").innerHTML="2023";mostrarCapa(2023);document.getElementById("conteoPredios").innerHTML="2023 → 524 Predios";return;}
+if(v==5){document.getElementById("valorAnio").innerHTML="2022";mostrarCapa(2022);document.getElementById("conteoPredios").innerHTML="2022 → 339 Predios";return;}
+if(v==6){document.getElementById("valorAnio").innerHTML="2021";mostrarCapa(2021);document.getElementById("conteoPredios").innerHTML="2021 → 1048 Predios";return;}
+if(v==7){document.getElementById("valorAnio").innerHTML="2020";mostrarCapa(2020);document.getElementById("conteoPredios").innerHTML="2020 → 307 Predios";return;}
+if(v==8){document.getElementById("valorAnio").innerHTML="2019";mostrarCapa(2019);document.getElementById("conteoPredios").innerHTML="2019 → 287 Predios";return;}
+if(v==9){mostrarTodos();document.getElementById("valorAnio").innerHTML="TODOS";document.getElementById("conteoPredios").innerHTML="TOTAL → 3932 Predios";return;}
+};
+quitarTodasLasCapas();
+document.getElementById("valorAnio").innerHTML="";
+document.getElementById("conteoPredios").innerHTML="Mover barra para iniciar";
+
+function activarParpadeo(){
+var estado=true;
+setInterval(function(){
+obtenerCapas().forEach(function(capa){
+if(capa){capa.eachLayer(function(layer){
+if(estado){layer.setStyle({fillOpacity:0.1,opacity:0.3});}else{layer.setStyle({fillOpacity:0.6,opacity:1});}
+});}
+});
+estado=!estado;
+},300);
+}
+activarParpadeo();
+
+function buscarPredio(){
+var texto=document.getElementById("textoBuscar").value.toLowerCase().trim();
+if(texto===""){return;}
+var capas=obtenerCapas();
+capas.forEach(function(capa){if(capa){capa.eachLayer(function(layer){capa.resetStyle(layer);});}});
+capas.forEach(function(capa){
+if(capa){capa.eachLayer(function(layer){
+var p=layer.feature.properties || {};
+var clave=(p.clavecatas || "").toString().toLowerCase();
+var propietario=(p.propietari || "").toString().toLowerCase();
+var cedula=(p.documentop || "").toString().toLowerCase();
+if(clave.includes(texto) || propietario.includes(texto) || cedula.includes(texto)){
+if(!map.hasLayer(capa)){map.addLayer(capa);}
+map.fitBounds(layer.getBounds());
+layer.setStyle({color:'red',weight:4,fillColor:'red',fillOpacity:0.9});
+layer.openPopup();
+}
+});}
+});
+}
+
+function iniciarVoz(){
+var SpeechRecognition=window.SpeechRecognition || window.webkitSpeechRecognition;
+if(!SpeechRecognition){alert("Tu navegador no soporta reconocimiento de voz");return;}
+var reconocimiento=new SpeechRecognition();
+reconocimiento.lang="es-EC";reconocimiento.interimResults=false;reconocimiento.maxAlternatives=1;
+reconocimiento.start();
+reconocimiento.onresult=function(event){
+var texto=event.results[0][0].transcript;
+texto=texto.replace(/raya/g,"-").replace(/guion/g,"-").replace(/guión/g,"-").replace(/slash/g,"/").replace(/barra/g,"/").replace(/punto/g,".").replace(/coma/g,",").replace(/espacio/g," ").replace(/guion bajo/g,"_");
+document.getElementById("textoBuscar").value=texto;
+buscarPredio();
+};
+reconocimiento.onerror=function(event){alert("Error en reconocimiento de voz");};
+}
+
+var grupoLimites=L.layerGroup().addTo(map);
+function capaLimite(datos,color){
+return L.geoJson(datos,{style:{color:color,weight:4,opacity:1,fillOpacity:0},
+onEachFeature:function(feature,layer){
+if(feature.properties){
+var nombre=feature.properties.nombre || feature.properties.NOMBRE || feature.properties.parroquia || feature.properties.barrio || "";
+if(nombre!=""){layer.bindTooltip(nombre,{permanent:false,direction:"center",className:"labelLimite"});}
+}
+}});
+}
+function getColorParroquia(i){
+var colores=["#fde0dd","#e0ecf4","#e6f5d0","#fff2ae","#f1e2cc","#d9f0f3","#fddbc7","#e7d4e8","#ccebc5","#fbb4ae","#b3cde3","#decbe4","#fed9a6","#ffffcc","#e5d8bd"];
+return colores[i % colores.length];
+}
+fetch("https://raw.githubusercontent.com/Antonio20252025/Catastro_BD_Legalizacion/refs/heads/main/Parroquias_Urbanas_y_Rurales.geojson")
+.then(function(r){return r.json();})
+.then(function(data){
+var coloresParroquia={};var i=0;
+var parroquias=L.geoJson(data,{
+style:function(feature){
+var nombre=(feature.properties.parroquia || feature.properties.nombre || feature.properties.name || feature.properties.NOMBRE || "sin_nombre").toString().trim().toUpperCase();
+if(!coloresParroquia[nombre]){coloresParroquia[nombre]=getColorParroquia(i++);}
+return{color:"#333",weight:1.5,dashArray:"10,15",fillColor:coloresParroquia[nombre],fillOpacity:0.30,opacity:0.9};
+},
+onEachFeature:function(feature,layer){
+var nombre=feature.properties.name || feature.properties.nombre || feature.properties.NOMBRE || feature.properties.parroquia || "";
+if(nombre!=""){layer.bindTooltip(nombre,{permanent:true,direction:"center",className:"labelParroquia"});}
+}
+});
+grupoLimites.addLayer(parroquias);
+});
+
+var leyenda=L.control({position:'bottomright'});
+leyenda.onAdd=function(map){
+var div=L.DomUtil.create('div','info legend');
+div.style.background='white';div.style.padding='10px';div.style.borderRadius='8px';div.style.boxShadow='0 0 5px gray';
+div.innerHTML='<h3>Simbología</h3>';
+var años=[2026,2025,2024,2023,2022,2021,2020,2019];
+var colores=['green','yellow','Magenta','cyan','red','orange','purple','blue'];
+for(var i=0;i<años.length;i++){div.innerHTML+='<i style="background:'+colores[i]+'; width:18px; height:18px; display:inline-block; margin-right:5px;"></i> '+años[i]+'<br>';}
+return div;
+};
+leyenda.addTo(map);
+
+document.getElementById("btnAdmin").addEventListener("click",function(){
+var minutos=prompt("¿Cuántos MINUTOS quieres que dure el link? (60 = 1 hora)");
+if(!minutos)return;
+minutos=parseInt(minutos);
+if(isNaN(minutos) || minutos<=0){minutos=60;}
+var ahora=new Date();
+ahora.setMinutes(ahora.getMinutes()+minutos);
+var fechaExp=ahora.toISOString();
+var urlBase=window.location.origin+window.location.pathname;
+var linkFinal=urlBase+"?exp="+ encodeURIComponent(fechaExp)+ "&token=ABC123"
+navigator.clipboard.writeText(linkFinal);
+alert("Link válido por "+minutos+" minutos\n\n"+linkFinal);
+});
 </script>
 </body>
 </html>
