@@ -285,7 +285,7 @@ border:1.5px solid red;
 
 <div id="overlayClave" style="display:none;">
   <div id="boxClave">
-    <h3>🔒 Acceso restringido</h3>
+    <h3>Ingresa tu contraseña</h3>
     <div class="input-pass-wrapper">
       <input type="password" id="adminPassInput" placeholder="Ingrese clave">
       <button type="button" id="btnOjo" onclick="toggleClave()">👁️</button>
@@ -437,10 +437,10 @@ function toggleClave(){
   var ojo = document.getElementById("btnOjo");
   if(input.type === "password"){
     input.type = "text";
-    ojo.textContent = "🙈";
+    ojo.textContent = "👁️";
   }else{
     input.type = "password";
-    ojo.textContent = "👁️";
+    ojo.textContent = "🙈";
   }
 }
 
@@ -453,11 +453,11 @@ function verificarClave(){
   var clave = document.getElementById("adminPassInput").value.trim();
   var btn = document.getElementById("btnAdmin");
   // acepta manta2026 o Manta2026
-  if(clave.toLowerCase() === "manta2026"){
+  if(clave.toLowerCase() === "gadmanta2026"){
     document.getElementById("overlayClave").style.display = "none";
     if(btn){ btn.style.display="block"; }
   }else{
-    document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>🔒 Acceso restringido</h2>";
+    document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>Ingresa tu contraseña</h2>";
   }
 }
 
