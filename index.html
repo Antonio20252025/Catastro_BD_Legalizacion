@@ -475,6 +475,39 @@ function verificarClave(){
   }
 }
 
+window.addEventListener("load",function(){
+  var params=new URLSearchParams(window.location.search);
+  var token=params.get("token");
+  var fechaExp=params.get("exp");
+  var TOKEN_VALIDO="ABC123";
+  var btn=document.getElementById("btnAdmin");
+
+  function bloquearExpirado(){
+    document.body.innerHTML="<h2 style='text-align:center;margin-top:50px;color:red;'>⛔ Link expirado</h2>";
+  }
+
+  if(token){
+    if(token!==TOKEN_VALIDO){
+      document.body.innerHTML="🔒 Token inválido";
+      return;
+    }
+    if(fechaExp){
+      var limite=new Date(fechaExp);
+      if(new Date() > limite){ bloquearExpirado(); return; }
+      setInterval(function(){ if(new Date() > limite){ bloquearExpirado(); } },10000);
+    }
+    if(btn){ btn.style.display="none"; }
+    return;
+  }
+
+  // SI NO HAY TOKEN, PIDE CLAVE
+  mostrarModalClave();
+  
+  document.getElementById("adminPassInput").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ verificarClave(); }
+  });
+});
+
 /* =====================================================
 
    CAPAS BASE
