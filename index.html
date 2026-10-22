@@ -598,165 +598,95 @@ L.control.layers(baseMaps).addTo(map);
 ===================================================== */
 
 function crearCapa(datos,relleno,contorno){
-
 return L.geoJson(datos,{
-
 style:function(){
-
 return{
-
 color:contorno,
-
 weight:2,
-
 fillColor:relleno,
-
 fillOpacity:0.5
-
 };
-
 },
 
-
 onEachFeature:function(feature,capa){
-
-console.log(feature.properties);
-
 var p=feature.properties || {};
 
-
 capa.bindPopup(
-
 "<strong>Clave Catastral: </strong>"+
-
 (p.clavecatas || "")+
-
 "<br>"+
-
 "<strong>Zona: </strong>"+
-
 (p.zona || "")+
-
 "<br>"+
-
 "<strong>Sector: </strong>"+
-
 (p.sector || "")+
-
 "<br>"+
-
 "<strong>Manzana: </strong>"+
-
 (p.manzana || "")+
-
 "<br>"+
-
 "<strong>Lote: </strong>"+
-
 (p.lote || "")+
-
 "<br>"+
-
 "<strong>Propietario: </strong>"+
-
 (p.propietari || "")+
-
 "<br>"+
-
 "<strong>Cedula: </strong>"+
-
 (p.documentop || "")+
-
 "<br>"+
-
 "<strong>Dirección: </strong>"+
-
 (p.direccion || "")+
-
 "<br>"+
-
 "<strong>Área: </strong>"+
-
 (p.area_m2 || "")+
-
 "<br>"+
-
 "<strong>Zona: </strong>"+
-
 (p.zonaurbano || "")+
-
 "<br>"+
-
 "<strong>Parroquia: </strong>"+
-
 (p.parroquia || "")+
-
 "<br>"+
-
 "<strong>Barrio: </strong>"+
-
 (p.barrio || "")+
-
 "<br>"+
-
 "<strong>Resolución: </strong>"+
-
 (p.RESOLUCION || "")+
-
 "<br>"+
-
 "<strong>Observación: </strong>"+
-
 (p.observacio || "")
+,{
+closeButton:true,
+autoClose:true,
+closeOnClick:true
+});
 
-);
-
-
-/* MOUSEOVER */
-
+/* MOUSEOVER: SOLO resalta, NO abre popup */
 capa.on("mouseover",function(){
-
 this.setStyle({
-
 color:'red',
-
 weight:4,
-
 fillOpacity:0.9
-
+});
+this.bringToFront();
 });
 
-this.openPopup();
-
-});
-
-
-/* MOUSEOUT */
-
+/* MOUSEOUT: vuelve al estilo normal */
 capa.on("mouseout",function(){
-
 this.setStyle({
-
 color:contorno,
-
 weight:2,
-
 fillColor:relleno,
-
 fillOpacity:0.5
-
+});
 });
 
-this.closePopup();
-
-});
-
-}
-
+/* CLICK: AHORA SI muestra la info */
+capa.on("click",function(){
+this.openPopup();
 });
 
 }
-
+});
+}
 
 /* =====================================================
 
